@@ -18,7 +18,7 @@
 	"currencySymbol": "£",
 	"currencyISO": "USD",
 	"paymentGateway": ["stripe"],
-	"databaseConnectionString": "mongodb+srv://nitsuga:<password>@cluster0.gf74h.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+	"databaseConnectionString": "mongodb+srv://nitsuga:zencast@cluster0.gf74h.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
 	"theme": "Cloth",
 	"trackStock": false,
 	"orderHook": "",
