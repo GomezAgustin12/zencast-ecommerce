@@ -8,7 +8,7 @@ const baseRepository = (collection) => ({
 			if (process.env.NODE_ENV !== 'test') {
 				console.log('schemaValidate errors', schemaValidate.errors);
 			}
-			throw Error(schemaValidate.errors);
+			throw Error(schemaValidate.errors[0].message);
 		}
 	},
 	findOne: async (query) => {

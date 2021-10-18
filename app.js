@@ -452,19 +452,13 @@ initDb(config.databaseConnectionString, async (err, db) => {
 	const admin = require('./routes/AdminRoutes');
 	const product = require('./routes/product');
 	const customer = require('./routes/customer');
-	const order = require('./routes/order');
-	const user = require('./routes/user');
-	const reviews = require('./routes/reviews');
 	const checkout = require('./routes/checkout');
 
 	// Setup the routes
 	app.use('/', index);
 	app.use('/', customer);
 	app.use('/', product);
-	app.use('/', order);
-	app.use('/', user);
 	app.use('/', admin);
-	app.use('/', reviews);
 	app.use('/', checkout);
 
 	// Payment route(s)

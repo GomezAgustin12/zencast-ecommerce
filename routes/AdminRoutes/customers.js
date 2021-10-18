@@ -11,12 +11,7 @@ router.put('/update', restrict, customerCtrl.updateFromAdmin);
 router.delete('/', restrict, customerCtrl.delete);
 
 // render the customer view
-router.get(
-	'/view/:id?',
-	restrict,
-
-	customerViews.viewFromAdmin
-);
+router.get('/view/:id?', restrict, customerViews.viewFromAdmin);
 
 // customers list
 router.get('/', restrict, customerViews.listCustomers);

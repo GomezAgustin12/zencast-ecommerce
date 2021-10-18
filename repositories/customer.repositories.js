@@ -1,6 +1,5 @@
 const baseRepository = require('./baseRepository');
 const { getDb } = require('../lib/db');
-const colors = require('colors');
 
 const db = getDb();
 const collection = db.customers;

@@ -1,63 +1,109 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { restrict, checkAccess } = require('../../lib/auth');
-const csrf = require('csurf');
+const { restrict, checkAccess } = require("../../lib/auth");
+const csrf = require("csurf");
 const csrfProtection = csrf({ cookie: true });
-const settingsCtrl = require('../../controllers/settings.controller');
-const settingsViews = require('../../controllers/settings.views');
+const settingsCtrl = require("../../controllers/settings.controller");
+const settingsViews = require("../../controllers/settings.views");
 
 // settings
-router.get('/admin/settings', csrfProtection, restrict, settingsViews.settings);
+router.get("/", csrfProtection, restrict, settingsViews.settings);
 
 // settings update
-router.post('/update', restrict, checkAccess, settingsCtrl.update);
+router.post("/update", restrict, checkAccess, settingsCtrl.update);
 
 // settings menu
-router.get('/menu', csrfProtection, restrict, settingsViews.menuSettings);
+router.get("/menu", csrfProtection, restrict, settingsViews.menuSettings);
 
 // page list
-router.get('/pages', csrfProtection, restrict, settingsViews.pagesSettings);
+router.get("/pages", csrfProtection, restrict, settingsViews.pagesSettings);
 
 // pages new
-router.get('/pages/new', csrfProtection, restrict, checkAccess, settingsViews.newPages);
+router.get(
+  "/pages/new",
+  csrfProtection,
+  restrict,
+  checkAccess,
+  settingsViews.newPages
+);
 
 // pages editor
-router.get('/pages/edit/:page', csrfProtection, restrict, checkAccess, settingsViews.editPages);
+router.get(
+  "/pages/edit/:page",
+  csrfProtection,
+  restrict,
+  checkAccess,
+  settingsViews.editPages
+);
 
 // insert/update page
-router.post('/page', restrict, checkAccess, settingsCtrl.pageSettings);
+router.post("/page", restrict, checkAccess, settingsCtrl.pageSettings);
 
 // delete a page
-router.post('/page/delete', restrict, checkAccess, settingsCtrl.deletePage);
+router.post("/page/delete", restrict, checkAccess, settingsCtrl.deletePage);
 
 // new menu item
-router.post('/menu/new', restrict, checkAccess, settingsCtrl.newMenu);
+router.post("/menu/new", restrict, checkAccess, settingsCtrl.newMenu);
 
 // update existing menu item
-router.post('/menu/update', restrict, checkAccess, settingsCtrl.updateMenu);
+router.post("/menu/update", restrict, checkAccess, settingsCtrl.updateMenu);
 
 // delete menu item
-router.post('/menu/delete', restrict, checkAccess, settingsCtrl.deleteMenu);
+router.post("/menu/delete", restrict, checkAccess, settingsCtrl.deleteMenu);
 
 // We call this via a Ajax call to save the order from the sortable list
-router.post('/menu/saveOrder', restrict, checkAccess, settingsCtrl.saveOrder);
+router.post("/menu/saveOrder", restrict, checkAccess, settingsCtrl.saveOrder);
 
 // Discount codes
-router.get('/discounts', csrfProtection, checkAccess, restrict, settingsViews.discounts);
+router.get(
+  "/discounts",
+  csrfProtection,
+  checkAccess,
+  restrict,
+  settingsViews.discounts
+);
 
 // Edit a discount code
-router.get('/discount/edit/:id', csrfProtection, restrict, checkAccess, settingsViews.editDiscount);
+router.get(
+  "/discount/edit/:id",
+  csrfProtection,
+  restrict,
+  checkAccess,
+  settingsViews.editDiscount
+);
 
 // Update discount code
-router.post('/discount/update', restrict, checkAccess, settingsCtrl.updateDiscounts);
+router.post(
+  "/discount/update",
+  restrict,
+  checkAccess,
+  settingsCtrl.updateDiscounts
+);
 
 // Create a discount code
-router.get('/discount/new', csrfProtection, restrict, checkAccess, settingsViews.newDiscount);
+router.get(
+  "/discount/new",
+  csrfProtection,
+  restrict,
+  checkAccess,
+  settingsViews.newDiscount
+);
 
 // Create a discount code
-router.post('/discount/create', csrfProtection, restrict, checkAccess, settingsCtrl.createDiscount);
+router.post(
+  "/discount/create",
+  csrfProtection,
+  restrict,
+  checkAccess,
+  settingsCtrl.createDiscount
+);
 
 // Delete discount code
-router.delete('/discount/delete', restrict, checkAccess, settingsCtrl.deleteDiscount);
+router.delete(
+  "/discount/delete",
+  restrict,
+  checkAccess,
+  settingsCtrl.deleteDiscount
+);
 
 module.exports = router;

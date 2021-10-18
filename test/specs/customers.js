@@ -63,7 +63,7 @@ test('[Fail] Create with invalid email address', async (t) => {
 
 	const res = await g.request.post('/customer/create').send(customer).expect(400);
 
-	t.deepEqual(res.body[0].message, 'should match format "emailAddress"');
+	t.deepEqual(res.body.message, 'Failed to insert customer: should match format "emailAddress"');
 });
 
 test('[Success] Update existing customer from dashboard', async (t) => {
@@ -81,8 +81,10 @@ test('[Success] Update existing customer from dashboard', async (t) => {
 		phone: '0444444444',
 	};
 
+	console.log(g.users[0].apiKey);
+
 	const res = await g.request
-		.post('/admin/customer/update')
+		.put('/admin/customer/update')
 		.send(customer)
 		.set('apiKey', g.users[0].apiKey)
 		.expect(200);
@@ -122,7 +124,7 @@ test('[Success] Update existing customer from customer page', async (t) => {
 		})
 		.expect(200);
 
-	const res = await g.request.post('/customer/update').send(customer).expect(200);
+	const res = await g.request.put('/customer/update').send(customer).expect(200);
 
 	t.deepEqual(res.body.message, 'Customer updated');
 	t.deepEqual(res.body.customer.company, customer.company);

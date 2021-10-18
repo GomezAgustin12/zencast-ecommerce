@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { clearCustomer } = require('../lib/common');
 const rateLimit = require('express-rate-limit');
-const { restrict, checkCustomerPresent } = require('../lib/auth');
+const { checkCustomerPresent } = require('../lib/auth');
 const customerCtrl = require('../controllers/customer.controller');
 const customerViews = require('../controllers/customer.views');
 
@@ -20,7 +20,11 @@ router.post('/customer/save', customerCtrl.save);
 router.get('/customer/account', customerViews.account);
 
 // Update a customer
-router.put('/customer/update', checkCustomerPresent, customerCtrl.update);
+router.put(
+	'/customer/update',
+	// checkCustomerPresent,
+	customerCtrl.update
+);
 
 router.get('/customer/login', customerViews.login);
 

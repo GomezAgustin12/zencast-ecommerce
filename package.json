@@ -8,8 +8,11 @@
 		"deploy": "node deploy.js",
 		"testdata": "node lib/testdata.js",
 		"test": "ava",
+		"oneTest": "ava --match='[Success] Update existing customer from dashboard'",
 		"dev": " pm2-dev start app.js",
-		"lint": "eslint ./"
+		"lint": "eslint ./",
+		"coverage": "c8 ava",
+		"prettifyAllFiles": "prettier --write '**/*.js'"
 	},
 	"ava": {
 		"serial": true,
@@ -27,6 +30,8 @@
 	},
 	"dependencies": {
 		"@adyen/api-library": "^2.1.7",
+		"@babel/eslint-parser": "^7.15.8",
+		"@babel/eslint-plugin": "^7.14.5",
 		"ajv": "^6.10.2",
 		"ajv-errors": "^1.0.1",
 		"async": "^2.6.3",
@@ -80,6 +85,7 @@
 	},
 	"devDependencies": {
 		"ava": "^3.13.0",
+		"c8": "^7.10.0",
 		"clean-css": "^4.2.3",
 		"eslint": "^7.32.0",
 		"eslint-config-standard": "^13.0.1",
@@ -92,6 +98,7 @@
 		"less": "^3.12.2",
 		"nodemon": "^2.0.12",
 		"pm2": "^4.5.0",
+		"prettier": "^2.4.1",
 		"supertest": "^4.0.2",
 		"uglify-es": "^3.3.9"
 	},

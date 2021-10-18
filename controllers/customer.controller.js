@@ -1,25 +1,21 @@
 const colors = require('colors');
 const randtoken = require('rand-token');
 const bcrypt = require('bcryptjs');
-const {
-	// getId,
-	mongoSanitize,
-	sendEmail,
-} = require('../lib/common');
+const { getId, mongoSanitize, sendEmail } = require('../lib/common');
 const { indexCustomers } = require('../lib/indexing');
 const CustomerRepo = require('../repositories/customer.repositories');
 
 //Uncomment just for testing and use an id from the database from customers collection
-const ObjectId = require('mongodb').ObjectID;
-const getId = (id) => {
-	id = '6134bd0254ffc6eb2a8658f6';
-	if (id) {
-		if (id.length !== 24) {
-			return id;
-		}
-	}
-	return ObjectId(id);
-};
+// const ObjectId = require('mongodb').ObjectID;
+// const getId = (id) => {
+// 	id = '6134bd0254ffc6eb2a8658f6';
+// 	if (id) {
+// 		if (id.length !== 24) {
+// 			return id;
+// 		}
+// 	}
+// 	return ObjectId(id);
+// };
 
 const filledCustomerObject = (req) => ({
 	email: req.body.email,
@@ -79,8 +75,8 @@ const customerCtrl = {
 				res.status(200).json(customerReturn);
 			});
 		} catch (error) {
-			console.error(colors.red('Failed to insert customer: ', error));
-			res.status(400).json({ message: error.message });
+			console.error(colors.red('🔥🔥', 'Failed to insert customer: ', error));
+			res.status(400).json({ message: `Failed to insert customer: ${error.message}` });
 		}
 	},
 	save: async (req, res) => {
@@ -105,11 +101,11 @@ const customerCtrl = {
 			const customerObj = filledCustomerObject(req);
 
 			CustomerRepo.validateSchema('editCustomer', customerObj);
-			await CustomerRepo.checkCustomerExistById(getId(req.session.customerId));
+			await CustomerRepo.checkCustomerExistById(getId(req.session.id));
 
 			// Update customer
 			const updatedCustomer = await CustomerRepo.updateOne({
-				query: { _id: getId(req.session.customerId) },
+				query: { _id: getId(req.session.id) },
 				set: customerObj,
 			});
 			indexCustomers(req.app).then(() => {
@@ -138,13 +134,15 @@ const customerCtrl = {
 
 			CustomerRepo.validateSchema('editCustomer', customerObj);
 
-			CustomerRepo.checkCustomerExistById(getId(req.body.customerId));
+			const customer = await CustomerRepo.findOne({ email: req.body.email });
+			if (!customer) throw Error('Customer not found');
 
 			// Update customer
 			const updatedCustomer = await CustomerRepo.updateOne({
-				query: { _id: getId(req.body.customerId) },
+				query: { email: req.body.email },
 				set: customerObj,
 			});
+
 			indexCustomers(req.app).then(() => {
 				const returnCustomer = updatedCustomer.value;
 				delete returnCustomer.password;
@@ -174,7 +172,6 @@ const customerCtrl = {
 	},
 	findByEmail: async (req, res) => {
 		try {
-			console.log('🤪');
 			const customerEmail = req.body.customerEmail;
 
 			// Search for a customer
@@ -194,7 +191,9 @@ const customerCtrl = {
 		}
 	},
 	login: async (req, res) => {
-		const customer = await CustomerRepo.findOne({ email: mongoSanitize(req.body.loginEmail) });
+		const customer = await CustomerRepo.findOne({
+			email: mongoSanitize(req.body.loginEmail),
+		});
 		// check if customer exists with that email
 		if (customer === undefined || customer === null) {
 			res.status(400).json({
@@ -290,7 +289,11 @@ const customerCtrl = {
 		try {
 			await CustomerRepo.updateOne({
 				query: { email: customer.email },
-				set: { password: newPassword, resetToken: undefined, resetTokenExpiry: undefined },
+				set: {
+					password: newPassword,
+					resetToken: undefined,
+					resetTokenExpiry: undefined,
+				},
 			});
 			const mailOpts = {
 				to: customer.email,
