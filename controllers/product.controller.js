@@ -1,7 +1,12 @@
-const { emptyCart } = require("../lib/cart");
+const {
+  emptyCart,
+  updateTotalCart,
+  updateSubscriptionCheck,
+} = require("../lib/cart");
 const { getId } = require("../lib/common");
-const { updateTotalCart, updateSubscriptionCheck } = require("../lib/cart");
+const { createReview } = require("../lib/modules/reviews-basic");
 const colors = require("colors");
+const stripHtml = require("string-strip-html");
 
 const { CartRepo, ProductRepo, VariantsRepo } = require("../repositories");
 
@@ -104,11 +109,9 @@ const productCtrl = {
 
           // Check there is sufficient stock
           if (productQuantity > netStock) {
-            res
-              .status(400)
-              .json({
-                message: "There is insufficient stock of this product.",
-              });
+            res.status(400).json({
+              message: "There is insufficient stock of this product.",
+            });
             return;
           }
         }
@@ -210,12 +213,10 @@ const productCtrl = {
 
       // If cart already has a subscription you cannot add anything else
       if (req.session.cartSubscription) {
-        return res
-          .status(400)
-          .json({
-            message:
-              "Subscription already existing in cart. You cannot add more.",
-          });
+        return res.status(400).json({
+          message:
+            "Subscription already existing in cart. You cannot add more.",
+        });
       }
 
       // If existing cart isn't empty check if product is a subscription
@@ -259,11 +260,9 @@ const productCtrl = {
         if (product.productStockDisable !== true && productStock) {
           // If there is more stock than total (ignoring held)
           if (productQuantity > productStock) {
-            return res
-              .status(400)
-              .json({
-                message: "There is insufficient stock of this product.",
-              });
+            return res.status(400).json({
+              message: "There is insufficient stock of this product.",
+            });
           }
 
           // Aggregate our current stock held from all users carts
@@ -280,11 +279,9 @@ const productCtrl = {
 
               // Check there is sufficient stock
               if (productQuantity > netStock) {
-                return res
-                  .status(400)
-                  .json({
-                    message: "There is insufficient stock of this product.",
-                  });
+                return res.status(400).json({
+                  message: "There is insufficient stock of this product.",
+                });
               }
             }
           }
