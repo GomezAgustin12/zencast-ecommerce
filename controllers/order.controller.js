@@ -7,6 +7,7 @@ const {
 const { emptyCart } = require("../lib/cart");
 const { indexOrders } = require("../lib/indexing");
 const OrdersRepo = require("../repositories/orders.repositories");
+const colors = require("colors");
 
 const orderCtrl = {
   create: async (req, res) => {

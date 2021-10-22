@@ -5,7 +5,6 @@ const rateLimit = require('express-rate-limit');
 const { checkCustomerPresent } = require('../lib/auth');
 const customerCtrl = require('../controllers/customer.controller');
 const customerViews = require('../controllers/customer.views');
-
 const apiLimiter = rateLimit({
 	windowMs: 300000, // 5 minutes
 	max: 5,

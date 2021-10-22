@@ -5,10 +5,13 @@ const {
 } = require("../lib/cart");
 const { getId } = require("../lib/common");
 const { createReview } = require("../lib/modules/reviews-basic");
+
 const colors = require("colors");
 const stripHtml = require("string-strip-html");
 
 const { CartRepo, ProductRepo, VariantsRepo } = require("../repositories");
+
+const _ = require("lodash");
 
 const productCtrl = {
   updatecart: async (req, res) => {
@@ -85,7 +88,7 @@ const productCtrl = {
     }
 
     // If stock management on check there is sufficient stock for this product
-    if (config.trackStock) {
+    if (config.trackStock === false) {
       // Only if not disabled
       if (product.productStockDisable !== true && productStock) {
         // If there is more stock than total (ignoring held)
@@ -97,7 +100,7 @@ const productCtrl = {
         }
 
         // Aggregate our current stock held from all users carts
-        const stockHeld = CartRepo.stockHeld();
+        const stockHeld = CartRepo.stockHeld(req.session.id);
 
         // If there is stock
         if (stockHeld.length > 0) {
@@ -256,8 +259,10 @@ const productCtrl = {
 
       // If stock management on check there is sufficient stock for this product
       if (config.trackStock) {
+        //esto esta en false en la config (settings.json)
         // Only if not disabled
         if (product.productStockDisable !== true && productStock) {
+          //no existe el campo "productStockDisable" en el modelo y nose de donde saca los datos
           // If there is more stock than total (ignoring held)
           if (productQuantity > productStock) {
             return res.status(400).json({

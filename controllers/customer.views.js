@@ -41,7 +41,7 @@ const customerViews = {
     });
   },
   viewFromAdmin: async (req, res) => {
-    const customer = await CustomerRepo.findOne({ _id: getId(req.params.id) });
+    const customer = await CustomersRepo.findOne({ _id: getId(req.params.id) });
 
     if (!customer) {
       // If API request, return json
@@ -103,7 +103,7 @@ const customerViews = {
     });
 
     // we search on the lunr indexes
-    const customers = await CustomerRepo.findMany({
+    const customers = await CustomersRepo.findMany({
       query: { _id: { $in: lunrIdArray } },
       sort: { created: -1 },
     });

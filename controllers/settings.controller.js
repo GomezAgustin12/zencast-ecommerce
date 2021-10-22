@@ -23,6 +23,8 @@ const {
   CustomersRepo,
   OrdersRepo,
 } = require("../repositories");
+const emailRegex = /\S+@\S+\.\S+/;
+const numericRegex = /^\d*\.?\d*$/;
 
 const settingsCtrl = {
   apiKey: async (req, res) => {

@@ -5,10 +5,10 @@ const collection = db.cart;
 
 const newCartRepo = {
   ...baseRepository(collection),
-  stockHeld: async () =>
+  stockHeld: async (id) =>
     await collection
       .aggregate([
-        { $match: { sessionId: { $ne: req.session.id } } },
+        { $match: { sessionId: { $ne: id } } },
         { $project: { _id: 0 } },
         { $project: { o: { $objectToArray: "$cart" } } },
         { $unwind: "$o" },

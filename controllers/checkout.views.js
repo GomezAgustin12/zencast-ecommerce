@@ -1,4 +1,3 @@
-const _ = require("lodash");
 const { clearSessionValue, getCountryList } = require("../lib/common");
 const { getPaymentConfig } = require("../lib/config");
 const { updateTotalCart } = require("../lib/cart");

@@ -3,12 +3,18 @@ const bcrypt = require("bcryptjs");
 const fs = require("fs");
 const path = require("path");
 const { validateJson } = require("../lib/schema");
-const { mongoSanitize, getId, safeParseInt } = require("../lib/common");
+const {
+  mongoSanitize,
+  getId,
+  safeParseInt,
+  cleanHtml,
+  convertBool,
+  checkboxBool,
+  getImages,
+} = require("../lib/common");
 const { UserRepo, VariantsRepo, ProductRepo } = require("../repositories");
-
-// Regex
-const emailRegex = /\S+@\S+\.\S+/;
-const numericRegex = /^\d*\.?\d*$/;
+const { indexProducts } = require("../lib/indexing");
+const rimraf = require("rimraf");
 
 const adminCtrl = {
   login: async (req, res) => {
