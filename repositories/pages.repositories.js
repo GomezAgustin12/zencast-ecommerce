@@ -1,11 +1,11 @@
-const baseRepository = require("./baseRepository");
-const { getDb } = require("../lib/db");
+const baseRepository = require('./baseRepository');
+const { getDb } = require('../lib/db');
 
 const db = getDb();
 const collection = db.pages;
 
 const newPagesRepo = {
-  ...baseRepository(collection),
+   ...baseRepository(collection),
 };
 
 module.exports = newPagesRepo;

@@ -1,17 +1,17 @@
-const { serial: test } = require("ava");
-const { runBefore, g } = require("../helper");
+const { serial: test } = require('ava');
+const { runBefore, g } = require('../helper');
 
 test.before(async () => {
-  await runBefore();
+   await runBefore();
 });
 
-test("[Success] Check for sitemap.xml", async (t) => {
-  const res = await g.request.get("/sitemap.xml").expect(200);
+test('[Success] Check for sitemap.xml', async (t) => {
+   const res = await g.request.get('/sitemap.xml').expect(200);
 
-  if (!res.text) {
-    t.fail();
-  }
+   if (!res.text) {
+      t.fail();
+   }
 
-  // Document should start with XML tag
-  t.deepEqual(res.text.substring(0, 5), "<?xml");
+   // Document should start with XML tag
+   t.deepEqual(res.text.substring(0, 5), '<?xml');
 });

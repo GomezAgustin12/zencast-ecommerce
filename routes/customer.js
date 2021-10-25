@@ -6,8 +6,8 @@ const { checkCustomerPresent } = require('../lib/auth');
 const customerCtrl = require('../controllers/customer.controller');
 const customerViews = require('../controllers/customer.views');
 const apiLimiter = rateLimit({
-	windowMs: 300000, // 5 minutes
-	max: 5,
+   windowMs: 300000, // 5 minutes
+   max: 5,
 });
 
 // insert a customer
@@ -19,11 +19,7 @@ router.post('/customer/save', customerCtrl.save);
 router.get('/customer/account', customerViews.account);
 
 // Update a customer
-router.put(
-	'/customer/update',
-	// checkCustomerPresent,
-	customerCtrl.update
-);
+router.put('/customer/update', checkCustomerPresent, customerCtrl.update);
 
 router.get('/customer/login', customerViews.login);
 
@@ -34,7 +30,11 @@ router.post('/customer/login_action', customerCtrl.login);
 router.get('/customer/forgotten', customerViews.forgotten);
 
 // forgotten password
-router.post('/customer/forgotten_action', apiLimiter, customerCtrl.forgottenPassword);
+router.post(
+   '/customer/forgotten_action',
+   apiLimiter,
+   customerCtrl.forgottenPassword
+);
 
 // reset password form
 router.get('/customer/reset/:token', customerViews.resetPassword);
@@ -47,16 +47,16 @@ router.post('/customer/check', customerCtrl.checkIfCustomerIslogout);
 
 // logout the customer
 router.post('/customer/logout', (req, res) => {
-	// Clear our session
-	clearCustomer(req);
-	res.status(200).json({});
+   // Clear our session
+   clearCustomer(req);
+   res.status(200).json({});
 });
 
 // logout the customer
 router.get('/customer/logout', (req, res) => {
-	// Clear our session
-	clearCustomer(req);
-	res.redirect('/customer/login');
+   // Clear our session
+   clearCustomer(req);
+   res.redirect('/customer/login');
 });
 
 module.exports = router;
