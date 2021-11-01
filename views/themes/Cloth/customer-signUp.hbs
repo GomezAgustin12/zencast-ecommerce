@@ -1,0 +1,185 @@
+<div class='col-5 m-auto'>
+   <form id='createOrderForm'>
+      <div class='row'>
+         <div class='col-12'>
+                <h1 class="text-center mb-4">Sing Up</h1>
+         </div>
+         <div class='col-12'>
+            <div class='form-group'>
+               <label for='exampleInputEmail1'>Email address *</label>
+               <div class='input-group'>
+                  <input
+                     type='email'
+                     class='form-control'
+                     id='registerEmail'
+                     aria-describedby='emailHelp'
+                     placeholder='Email address'
+                     required
+                  />
+               </div>
+            </div>
+         </div>
+         <div class='col-12'>
+            <div class='form-group'>
+               <label class='control-label'>{{@root.__ 'Company name'}}</label>
+               <input
+                  type='text'
+                  class='form-control'
+                  name='registerCompany'
+                  id='registerCompany'
+                  value='{{session.customerCompany}}'
+                  placeholder='Company name'
+               />
+            </div>
+         </div>
+         <div class='col-6'>
+            <div class='form-group'>
+               <label class='control-label'>{{@root.__ 'First name'}} *</label>
+               <input
+                  type='text'
+                  class='form-control'
+                  name='registerFirstname'
+                  id='registerFirstname'
+                  value='{{session.customerFirstname}}'
+                  placeholder='First name'
+                  required
+               />
+            </div>
+         </div>
+         <div class='col-6'>
+            <div class='form-group'>
+               <label class='control-label'>{{@root.__ 'Last name'}} *</label>
+               <input
+                  type='text'
+                  class='form-control'
+                  name='registerLastname'
+                  id='registerLastname'
+                  value='{{session.customerLastname}}'
+                  placeholder='Last name'
+                  required
+               />
+            </div>
+         </div>
+         
+         <div class='col-12'>
+            <div class='form-group'>
+               <label class='control-label'>{{@root.__ 'Address 1'}} *</label>
+               <input
+                  type='text'
+                  class='form-control'
+                  name='registerAddr1'
+                  id='registerAddr1'
+                  value='{{session.customerAddress1}}'
+                  placeholder='Address line 1'
+                  required
+               />
+            </div>
+         </div>
+         <div class='col-12'>
+            <div class='form-group'>
+               <label class='control-label'>{{@root.__ 'Address 2'}}</label>
+               <input
+                  type='text'
+                  class='form-control'
+                  name='registerAddr2'
+                  id='registerAddr2'
+                  value='{{session.customerAddress2}}'
+                  placeholder='Address line 2'
+               />
+            </div>
+         </div>
+         <div class='col-12'>
+            <div class='form-group'>
+               <label class='control-label'>{{@root.__ 'Country'}} *</label>
+               <select
+                  class='form-control'
+                  id='registerCountry'
+                  name='registerCountry'
+                  required
+               >
+                  <option value='' disabled selected>Select Country</option>
+                  {{#each countryList}}
+                     <option
+                        {{selectState this @root.session.customerCountry}}
+                        value='{{this}}'
+                     >{{this}}</option>
+                  {{/each}}
+               </select>
+            </div>
+         </div>
+         <div class='col-6'>
+            <div class='form-group'>
+               <label class='control-label'>{{@root.__ 'State'}} *</label>
+               <input
+                  type='text'
+                  class='form-control'
+                  name='registerState'
+                  id='registerState'
+                  value='{{session.customerState}}'
+                  placeholder='State'
+                  required
+               />
+            </div>
+         </div>
+         <div class='col-6'>
+            <div class='form-group'>
+               <label class='control-label'>{{@root.__ 'Postcode'}} *</label>
+               <input
+                  type='text'
+                  class='form-control'
+                  name='registerPostcode'
+                  id='registerPostcode'
+                  value='{{session.customerPostcode}}'
+                  placeholder='Postcode'
+                  required
+               />
+            </div>
+         </div>
+         <div class='col-12'>
+            <div class='form-group'>
+               <label class='control-label'>{{@root.__ 'Phone number'}}
+                  *</label>
+               <input
+                  type='text'
+                  class='form-control'
+                  name='registerPhoneNumber'
+                  id='registerPhoneNumber'
+                  value='{{session.customerPhone}}'
+                  placeholder='Phone number'
+                  required
+               />
+            </div>
+         </div>
+         <div class='col-12'>
+            <div class='form-group'>
+               <label class='control-label'>{{@root.__ 'Password'}}
+                  *</label>
+               <input
+                  type='password'
+                  class='form-control'
+                  name='registerCustomerPassword'
+                  id='registerCustomerPassword'
+                  placeholder='Password'
+                  required
+               />
+            </div>
+         </div>
+         <div class='col-12'>
+            <div class='form-group'>
+               <label class='control-label'>{{@root.__
+                     'Address delivery comment'
+                  }}</label>
+               <div class='form-group'>
+                  <textarea
+                     class='form-control'
+                     placeholder='Address delivery comment'
+                     id='orderComment'
+                     name='orderComment'
+                  >{{session.orderComment}}</textarea>
+               </div>
+            </div>
+         </div>
+         <button class="col-6 m-auto btn btn-outline-primary btn-block" id="customerSignUpForm" type="submit">{{ @root.__ "Create account" }}</button>
+      </div>
+   </form>
+</div>

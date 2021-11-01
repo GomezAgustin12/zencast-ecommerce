@@ -4,9 +4,6 @@ const { restrict, checkAccess } = require('../../lib/auth');
 const orderCtrl = require('../../controllers/order.controller');
 const orderViews = require('../../controllers/order.views');
 
-// Show orders
-router.get('/:page?', restrict, orderViews.show);
-
 // Admin section
 router.get('/bystatus/:orderstatus', restrict, orderViews.adminSection);
 
@@ -26,5 +23,8 @@ router.delete('/delete/:id', restrict, orderCtrl.delete);
 
 // update order status
 router.post('/statusupdate', restrict, checkAccess, orderCtrl.updateStatus);
+
+// Show orders
+router.get('/:page?', restrict, orderViews.show);
 
 module.exports = router;

@@ -270,14 +270,6 @@ const settingsCtrl = {
          return;
       }
 
-      // Check start is after today
-      if (moment(discountDoc.start).isBefore(moment())) {
-         res.status(400).json({
-            message: 'Discount start date needs to be after today',
-         });
-         return;
-      }
-
       // Check end is after the start
       if (!moment(discountDoc.end).isAfter(moment(discountDoc.start))) {
          res.status(400).json({

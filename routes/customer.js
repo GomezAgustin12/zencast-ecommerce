@@ -26,6 +26,9 @@ router.get('/customer/login', customerViews.login);
 // login the customer and check the password
 router.post('/customer/login_action', customerCtrl.login);
 
+// Customer signup
+router.get('/customer/signUp', customerViews.signUp);
+
 // customer forgotten password
 router.get('/customer/forgotten', customerViews.forgotten);
 

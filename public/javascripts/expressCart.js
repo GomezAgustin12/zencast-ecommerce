@@ -265,6 +265,37 @@ $(document).ready(function () {
 		e.preventDefault();
 	});
 
+	$('#customerSignUpForm').on('click', function (e) {
+		if (!e.isDefaultPrevented()) {
+			e.preventDefault();
+			$.ajax({
+				method: 'POST',
+				url: '/customer/create',
+				data: {
+					email: $('#registerEmail').val(),
+					company: $('#registerCompany').val(),
+					firstName: $('#registerFirstname').val(),
+					lastName: $('#registerLastname').val(),
+					address1: $('#registerAddr1').val(),
+					address2: $('#registerAddr2').val(),
+					country: $('#registerCountry').val(),
+					state: $('#registerState').val(),
+					postcode: $('#registerPostcode').val(),
+					phone: $('#registerPhoneNumber').val(),
+					password: $('#registerCustomerPassword').val(),
+					orderComment: $('#registerComment').val(),
+				},
+			})
+				.done(function () {
+					window.location = '/';
+				})
+				.fail(function (msg) {
+					showNotification(msg.responseJSON.message, 'danger');
+				});
+		}
+		e.preventDefault();
+	});
+
 	// call update settings API
 	$('#customerLogin').on('click', function (e) {
 		if (!e.isDefaultPrevented()) {

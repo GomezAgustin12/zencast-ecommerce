@@ -141,6 +141,19 @@ const customerViews = {
          helpers: req.handlebars.helpers,
       });
    },
+   signUp: async (req, res) => {
+      const config = req.app.config;
+
+      res.render(`${config.themeViews}customer-signUp`, {
+         title: 'Customer register',
+         config: req.app.config,
+         session: req.session,
+         message: clearSessionValue(req.session, 'message'),
+         messageType: clearSessionValue(req.session, 'messageType'),
+         helpers: req.handlebars.helpers,
+         countryList: getCountryList(),
+      });
+   },
    resetPassword: async (req, res) => {
       const db = req.app.db;
 

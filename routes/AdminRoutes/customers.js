@@ -5,7 +5,7 @@ const customerCtrl = require('../../controllers/customer.controller');
 const customerViews = require('../../controllers/customer.views');
 
 // Update a customer
-router.put('/update', restrict, customerCtrl.updateFromAdmin);
+router.post('/update', restrict, customerCtrl.updateFromAdmin);
 
 // Delete a customer
 router.delete('/', restrict, customerCtrl.delete);

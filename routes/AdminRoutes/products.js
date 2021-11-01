@@ -4,8 +4,6 @@ const { restrict, checkAccess } = require('../../lib/auth');
 const adminCtrl = require('../../controllers/admin.controller');
 const adminViews = require('../../controllers/admin.views');
 
-router.get('/:page?', restrict, adminViews.page);
-
 router.get('/filter/:search', restrict, adminViews.filter);
 
 // insert form
@@ -40,5 +38,7 @@ router.post('/setasmainimage', restrict, checkAccess, adminCtrl.setasmainimage);
 
 // deletes a product image
 router.post('/deleteimage', restrict, checkAccess, adminCtrl.deleteImage);
+
+router.get('/:page?', restrict, adminViews.page);
 
 module.exports = router;
