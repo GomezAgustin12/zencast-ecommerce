@@ -191,7 +191,7 @@ $(document).ready(function () {
 			}
 		});
 
-	$('#addDiscountCode').on('click', function (e) {
+	$('#adddiscountcode').on('click', function (e) {
 		e.preventDefault();
 		$.ajax({
 			method: 'POST',
@@ -208,7 +208,7 @@ $(document).ready(function () {
 			});
 	});
 
-	$('#removeDiscountCode').on('click', function (e) {
+	$('#removediscountcode').on('click', function (e) {
 		e.preventDefault();
 		$.ajax({
 			method: 'POST',
@@ -706,7 +706,7 @@ function updateCart(element) {
 function updateCartDiv() {
 	$.ajax({
 		method: 'GET',
-		url: '/checkout/cartdata',
+		url: '/checkout/cartData',
 	})
 		.done(function (result) {
 			// Update the cart div

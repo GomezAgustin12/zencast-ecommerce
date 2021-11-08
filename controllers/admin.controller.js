@@ -90,7 +90,7 @@ const adminCtrl = {
          };
 
          // Validate the body against schema
-         ProductRepo.validateSchema('newProduct', doc);
+         await ProductRepo.validateSchema('newProduct', doc);
 
          // Check permalink doesn't already exist
          const product = await ProductRepo.countDocuments({
@@ -119,7 +119,9 @@ const adminCtrl = {
             '🔥🔥',
             colors.red(`Error inserting document: ${error}`)
          );
-         res.status(400).json({ message: 'Error inserting document' });
+         res.status(400).json({
+            message: `Error inserting document: ${error.message}`,
+         });
       }
    },
    addVariant: async (req, res) => {

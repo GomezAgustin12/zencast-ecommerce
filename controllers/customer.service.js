@@ -5,8 +5,6 @@ const { getId, mongoSanitize, sendEmail } = require('../lib/common');
 const { indexCustomers } = require('../lib/indexing');
 const CustomerRepo = require('../repositories/customer.repositories');
 
-//Uncomment just for testing and use an id from the database from customers collection
-
 const filledCustomerObject = (req) => ({
    email: req.body.email,
    firstName: req.body.firstName,
@@ -33,76 +31,61 @@ const setCustomersInSession = (session, obj) => {
    session.customerPhone = obj.phone;
 };
 
-const customerCtrl = {
-   create: async (req, res) => {
-      try {
-         const customerObj = {
-            ...filledCustomerObject(req),
-            password: bcrypt.hashSync(req.body.password, 10),
-            created: new Date(),
-         };
+const customerService = {
+   create: async (req) => {
+      const customerObj = {
+         ...filledCustomerObject(req),
+         password: bcrypt.hashSync(req.body.password, 10),
+         created: new Date(),
+      };
 
-         CustomerRepo.validateSchema('newCustomer', customerObj);
+      CustomerRepo.validateSchema('newCustomer', customerObj);
 
-         // check for existing customer
-         const customer = await CustomerRepo.findOne({
-            email: customerObj.email,
-         });
-         if (customer)
-            throw Error('A customer already exists with that email address');
+      // check for existing customer
+      const customer = await CustomerRepo.findOne({
+         email: customerObj.email,
+      });
+      if (customer)
+         throw Error('A customer already exists with that email address');
 
-         // email is ok to be used.
-         const newCustomer = await CustomerRepo.create(customerObj);
-         indexCustomers(req.app).then(() => {
-            // Return the new customer
-            const customerReturn = newCustomer.ops[0];
-            delete customerReturn.password;
+      // email is ok to be used.
+      const newCustomer = await CustomerRepo.create(customerObj);
+      await indexCustomers(req.app);
+      // Return the new customer
+      const customerReturn = newCustomer.ops[0];
+      delete customerReturn.password;
 
-            // Set the customer into the session
-            req.session.customerPresent = true;
-            req.session.customerId = customerReturn._id;
-            setCustomersInSession(req, customerReturn);
-            req.session.orderComment = req.body.orderComment;
+      // Set the customer into the session
+      req.session.customerPresent = true;
+      req.session.customerId = customerReturn._id;
+      setCustomersInSession(req, customerReturn);
+      req.session.orderComment = req.body.orderComment;
 
-            // Return customer oject
-            res.status(200).json(customerReturn);
-         });
-      } catch (error) {
-         console.error(
-            colors.red('🔥🔥', 'Failed to insert customer: ', error)
-         );
-         res.status(400).json({
-            message: `Failed to insert customer: ${error.message}`,
-         });
-      }
+      // Return customer oject
+      return customerReturn;
    },
-   save: async (req, res) => {
-      try {
-         const customerObj = filledCustomerObject(req);
+   save: async (req) => {
+      const customerObj = filledCustomerObject(req);
 
-         CustomerRepo.validateSchema('saveCustomer', customerObj);
+      CustomerRepo.validateSchema('saveCustomer', customerObj);
 
-         // Set the customer into the session
-         req.session.customerPresent = true;
-         setCustomersInSession(req.session, customerObj);
-         req.session.orderComment = req.body.orderComment;
+      // Set the customer into the session
+      req.session.customerPresent = true;
+      setCustomersInSession(req.session, customerObj);
+      req.session.orderComment = req.body.orderComment;
 
-         res.status(200).json(customerObj);
-      } catch (error) {
-         console.error(colors.red('Failed to insert customer: ', error));
-         res.status(400).json({ message: error.message });
-      }
+      return customerObj;
    },
    update: async function (req, res) {
       try {
          const customerObj = filledCustomerObject(req);
 
          CustomerRepo.validateSchema('editCustomer', customerObj);
-         await CustomerRepo.checkCustomerExistById(getId(req.session.id));
+         await CustomerRepo.checkCustomerExistById(getId(req.body.customerId));
 
          // Update customer
          const updatedCustomer = await CustomerRepo.updateOne({
-            query: { _id: getId(req.session.id) },
+            query: { _id: getId(req.body.customerId) },
             set: customerObj,
          });
          indexCustomers(req.app).then(() => {
@@ -167,7 +150,7 @@ const customerCtrl = {
    },
    delete: async (req, res) => {
       try {
-         CustomerRepo.checkCustomerExistById(getId(req.body.customerId));
+         await CustomerRepo.checkCustomerExistById(getId(req.body.customerId));
 
          // Update customer
          await CustomerRepo.delete(getId(req.body.customerId));
@@ -350,4 +333,4 @@ const customerCtrl = {
    },
 };
 
-module.exports = customerCtrl;
+module.exports = customerService;

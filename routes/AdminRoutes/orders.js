@@ -19,7 +19,7 @@ router.post('/create', orderCtrl.create);
 router.get('/filter/:search', restrict, orderViews.filter);
 
 // order product
-router.delete('/delete/:id', restrict, orderCtrl.delete);
+router.get('/delete/:id', restrict, orderCtrl.delete);
 
 // update order status
 router.post('/statusupdate', restrict, checkAccess, orderCtrl.updateStatus);

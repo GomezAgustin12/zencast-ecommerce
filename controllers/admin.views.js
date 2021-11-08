@@ -64,9 +64,9 @@ const adminViews = {
             productPublished: true,
          }),
          ordersCount: await OrdersRepo.countDocuments({}),
-         ordersAmount: OrdersRepo.amount(),
-         productsSold: OrdersRepo.sold(),
-         topProducts: OrdersRepo.top(),
+         ordersAmount: await OrdersRepo.amount(),
+         productsSold: await OrdersRepo.sold(),
+         topProducts: await OrdersRepo.top(),
       };
 
       // Fix aggregate data

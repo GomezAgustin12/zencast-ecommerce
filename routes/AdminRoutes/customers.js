@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { restrict } = require('../../lib/auth');
-const customerCtrl = require('../../controllers/customer.controller');
+const customerCtrl = require('../../controllers/customer.service');
 const customerViews = require('../../controllers/customer.views');
 
 // Update a customer

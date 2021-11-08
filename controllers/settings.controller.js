@@ -199,14 +199,6 @@ const settingsCtrl = {
          return;
       }
 
-      // Check start is after today
-      if (moment(discountDoc.start).isBefore(moment())) {
-         res.status(400).json({
-            message: 'Discount start date needs to be after today',
-         });
-         return;
-      }
-
       // Check end is after the start
       if (!moment(discountDoc.end).isAfter(moment(discountDoc.start))) {
          res.status(400).json({
@@ -216,11 +208,10 @@ const settingsCtrl = {
       }
 
       // Check if code exists
-      const checkCode = await DiscountRepo.countDocuments({
+      const checkCode = await DiscountRepo.findOne({
          code: discountDoc.code,
-         _id: { $ne: getId(discountDoc.discountId) },
       });
-      if (checkCode) {
+      if (checkCode && !checkCode._id.equals(getId(discountDoc.discountId))) {
          res.status(400).json({ message: 'Discount code already exists' });
          return;
       }

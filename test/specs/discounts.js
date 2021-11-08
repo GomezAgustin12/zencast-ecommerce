@@ -219,7 +219,7 @@ test('[Fail] Update a discount with same code as existing', async (t) => {
       .post('/admin/settings/discount/update')
       .send({
          discountId: g.discounts[1]._id,
-         code: 'TEST_CODE_99',
+         code: g.discounts[0].code,
          type: 'amount',
          value: 20,
          start: moment().add(1, 'days').format('DD/MM/YYYY HH:mm'),

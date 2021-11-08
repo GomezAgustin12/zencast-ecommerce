@@ -51,7 +51,7 @@ test('[Fail] Try create a duplicate customer', async (t) => {
 
    t.deepEqual(
       res.body.message,
-      'A customer already exists with that email address'
+      'Failed to insert customer: A customer already exists with that email address'
    );
 });
 
@@ -99,7 +99,7 @@ test('[Success] Update existing customer from dashboard', async (t) => {
    console.log(g.users[0].apiKey);
 
    const res = await g.request
-      .put('/admin/customer/update')
+      .post('/admin/customer/update')
       .send(customer)
       .set('apiKey', g.users[0].apiKey)
       .expect(200);
@@ -120,7 +120,7 @@ test('[Success] Update existing customer from customer page', async (t) => {
    const customer = {
       customerId: g.customers[1]._id,
       company: 'Acme Company',
-      email: 'sarah.jones@test.com',
+      email: g.customers[1].email,
       firstName: 'Tina',
       lastName: 'Smith',
       address1: '2 Sydney Street',
@@ -134,7 +134,7 @@ test('[Success] Update existing customer from customer page', async (t) => {
    await g.request
       .post('/customer/login_action')
       .send({
-         loginEmail: 'sarah.jones@test.com',
+         loginEmail: g.customers[1].email,
          loginPassword: 'test',
       })
       .expect(200);
@@ -171,6 +171,8 @@ test('[Success] Filter customers', async (t) => {
       .get('/admin/customer/filter/Testy')
       .set('apiKey', g.users[0].apiKey)
       .expect(200);
+
+   console.log(res.body.customers.length);
 
    // Check the returned customers length
    t.deepEqual(1, res.body.customers.length);
@@ -229,6 +231,10 @@ test('[Success] Failed deleting an incorrect customer', async (t) => {
       .expect(400);
    t.deepEqual(
       res.body.message,
-      'Failed to delete customer. Customer not found'
+      'Failed deleting customer: Customer not found'
    );
 });
+
+// test('Save customer on session', async (t) => {
+//    const
+// });

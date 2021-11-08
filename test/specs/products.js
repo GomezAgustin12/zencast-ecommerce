@@ -75,7 +75,7 @@ test('[Success] Add a product', async (t) => {
    t.deepEqual(res.body.message, 'New product successfully created');
 });
 
-test('[Success] Add a product with incorrect GTIN', async (t) => {
+test('[Fail] Add a product with incorrect GTIN', async (t) => {
    const product = {
       productPermalink: 'test-jacket-invalid-gtin',
       productTitle: 'Test Jacket',
@@ -97,7 +97,10 @@ test('[Success] Add a product with incorrect GTIN', async (t) => {
       .expect(400);
 
    // Check the returned message
-   t.deepEqual(res.body[0].message, 'should match format "alphanumeric"');
+   t.deepEqual(
+      res.body.message,
+      'Error inserting document: should match format "alphanumeric"'
+   );
 });
 
 test('[Fail] Add a product - Duplicate permalink', async (t) => {

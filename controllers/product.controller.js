@@ -271,7 +271,7 @@ const productCtrl = {
                }
 
                // Aggregate our current stock held from all users carts
-               const stockHeld = CartRepo.stockHeldCtrl();
+               const stockHeld = await CartRepo.stockHeldCtrl();
 
                // If there is stock
                if (stockHeld.length > 0) {
