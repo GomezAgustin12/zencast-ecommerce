@@ -91,10 +91,10 @@ handlebars = handlebars.create({
    helpers: {
       // Language helper
       __: () => {
-         return i18n.__(this, arguments);
+         return i18n.__(this);
       }, // eslint-disable-line no-undef
       __n: () => {
-         return i18n.__n(this, arguments);
+         return i18n.__n(this);
       }, // eslint-disable-line no-undef
       availableLanguages: (block) => {
          let total = '';

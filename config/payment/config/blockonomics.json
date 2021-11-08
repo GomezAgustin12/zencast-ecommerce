@@ -1,6 +1,6 @@
 {
     "description": "Blockonomics payment",
-    "apiKey": "this_is_not_real",
+    "apiKey": "N2Vj2R5pkLqQGc0AOxbmn99rdtjAeajqdSEHFPZEWtY",
     "hostUrl": "https://www.blockonomics.co",
     "newAddressApi": "/api/new_address",
     "priceApi": "/api/price?currency="
