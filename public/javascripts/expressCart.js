@@ -1,5 +1,13 @@
 /* eslint-disable prefer-arrow-callback, no-var, no-tabs, prefer-template */
 /* globals showNotification, numeral, feather */
+
+const resetLocalStorage = () => {
+   localStorage.removeItem('sortOrder');
+   localStorage.removeItem('filterTerms');
+   localStorage.removeItem('searchTerms');
+};
+
+
 $(document).ready(function () {
    if ($(window).width() < 768) {
       $('.menu-side').on('click', function (e) {
@@ -982,8 +990,3 @@ const onSortOrderChange = () => {
    window.location.pathname = `product/sortOrder/${sortOrder}/filterTerms/${filterTerms}`;
 };
 
-const resetLocalStorage = () => {
-   localStorage.removeItem('sortOrder');
-   localStorage.removeItem('filterTerms');
-   localStorage.removeItem('searchTerms');
-};
