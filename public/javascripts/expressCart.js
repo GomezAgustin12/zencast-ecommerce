@@ -629,6 +629,22 @@ $(document).ready(function () {
       window.location.replace('/');
    });
 
+   $('.filterSelect').on('click', (e) => {
+      onFilterChange(e.target)
+   })
+
+   $('#home-btn').on('click', (e)=> {
+      resetLocalStorage()
+   })
+
+   $('.navbar-brand').on('click', () => {
+      resetLocalStorage()
+   })
+
+   $('#order_select').on('change', (e) =>{
+      onSortOrderChange()
+   })
+
    // search button click event
    $(document).on('click', '#btn_search', function (e) {
       e.preventDefault();
@@ -967,7 +983,6 @@ const onSortOrderChange = () => {
 };
 
 const resetLocalStorage = () => {
-   console.log('adssadasd');
    localStorage.removeItem('sortOrder');
    localStorage.removeItem('filterTerms');
    localStorage.removeItem('searchTerms');

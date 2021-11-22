@@ -5,23 +5,10 @@
          {{#each this.items}}
             <li
                style='cursor: pointer;'
-               onclick='onFilterChange(this)'
                id={{sentenceCaseToSnakeCase this}}
-               class='checkbox ml-4'
+               class='filterSelect checkbox ml-4'
             > {{this}}</li>
          {{/each}}
       </ul>
    {{/each}}
 </div>
-<script>
-   const onFilterChange = (target) => { const parent =
-   $(`#${target.id}`).parent('ul').attr('id'); // not sure if you wanted this,
-   but I thought I'd add it. // get an associative array of just the values. let
-   values = localStorage.getItem('filterTerms') ?
-   JSON.parse(localStorage.getItem('filterTerms')) : {}; values = values = {
-   ...values, [parent]: target.id }; //const filterTerms =
-   getFilterTerms(values); localStorage.setItem('filterTerms',
-   JSON.stringify(values)); if (JSON.stringify(values) === '') {
-   window.location.pathname = '/'; } window.location.pathname =
-   `product/filterTerms/${JSON.stringify(values)}`; };
-</script>
