@@ -638,10 +638,12 @@ $(document).ready(function () {
    });
 
    $('.filterSelect').on('click', (e) => {
+      console.log('ACA')
       onFilterChange(e.target)
    })
 
    $('#home-btn').on('click', (e)=> {
+      console.log('ACA')
       resetLocalStorage()
    })
 
