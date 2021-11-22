@@ -637,7 +637,7 @@ $(document).ready(function () {
       window.location.replace('/');
    });
 
-   $('.filterSelect').on('click', function (e) {
+   $(document).on('click', '.filterSelect', function (e) {
       console.log('ACA')
       onFilterChange(e.target)
    })
