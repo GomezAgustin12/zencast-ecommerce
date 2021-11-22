@@ -3,6 +3,7 @@ const {
    sendEmail,
    getEmailTemplate,
    clearCustomer,
+   randomNumber,
 } = require('../lib/common');
 const { emptyCart } = require('../lib/cart');
 const { indexOrders } = require('../lib/indexing');
@@ -43,6 +44,7 @@ const orderCtrl = {
             orderPhoneNumber: req.body.phone || req.session.customerPhone,
             orderComment: req.body.orderComment || req.session.orderComment,
             orderStatus: req.body.orderStatus,
+            orderTrackingNumber: randomNumber(),
             orderDate: new Date(),
             orderProducts: req.session.cart,
             orderType: 'Single',

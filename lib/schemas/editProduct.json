@@ -36,6 +36,21 @@
         "productPublished": {
             "type": "boolean"
         },
+        "productHashrate": {
+            "type": "string"
+         },
+        "productCondition": {
+            "type": "string"
+         },
+         "productAlgorithm": {
+            "type": "string"
+         },
+         "productWeight": {
+            "type": "number"
+         },
+         "productElectricityUsage": {
+            "type": "number"
+         },
         "productTags": {
             "type": "string"
         },

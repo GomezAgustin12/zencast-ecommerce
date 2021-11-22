@@ -1,7 +1,11 @@
 {{> themes/Cloth/front-menu}}
-<div class="productsWrapper col-sm-12 col-md-8 offset-md-2">
+<div class="container">
+    <div class="row">
+        {{> partials/sideFilter}}
+    <div class="productsWrapper col-8">
+
     {{#if filtered}}
-        <div class="product-layout product-results col-sm-12">
+        <div class="product-layout product-results col-12">
             {{#ifCond @root.paginateUrl '==' 'category'}}
             <h1>{{ @root.__ "Category" }}: <strong>{{@root.searchTerm}}</strong></h1>
             {{else}}
@@ -9,9 +13,22 @@
             {{/ifCond}}
         </div>
     {{/if}}
+    <div class="container">
+        <div class="row justify-content-end">
+        
+            <div class="row">
+                <b class="mr-2 my-auto">Ordenar por</b>
+                <select onchange="onSortOrderChange()" class="custom-select-sm border-none" id="order_select">
+                    <option value="asc">Menor precio</option>
+                    <option value="des">Mayor precio</option>
+                </select></div>
+     
+        </div>
+    </div> 
+    
     <div class="row product-layout">
         {{#ifCond results.length '==' 0}}
-            <div class="col-sm-12">
+            <div class="col-12">
                 <p class="text-danger">{{ @root.__ "No products found" }}</p>
             </div>
         {{/ifCond}}
@@ -77,6 +94,8 @@
             </div>
         {{/each}}
     </div>
+</div>
+</div>
 </div>
 <input type="hidden" id="itemsPerPage" value="{{productsPerPage}}" >
 <input type="hidden" id="pageNum" value="{{pageNum}}">

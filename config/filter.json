@@ -1,0 +1,21 @@
+{
+   "items": [
+      { "display": "Brand", "id": "productBrand" },
+      {
+         "display": "Algorithm",
+         "id": "productAlgorithm"
+      },
+      {
+         "display": "Hashrate",
+         "id": "productHashrate"
+      },
+      {
+         "display": "Electricity Usage",
+         "id": "productElectricityUsage"
+      },
+      {
+         "display": "Condition",
+         "id": "productCondition"
+      }
+   ]
+}

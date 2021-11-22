@@ -1,6 +1,7 @@
-const { clearSessionValue, getCountryList } = require('../lib/common');
+const { clearSessionValue, getCountryList, getId } = require('../lib/common');
 const { getPaymentConfig } = require('../lib/config');
 const { updateTotalCart } = require('../lib/cart');
+const { CustomersRepo } = require('../repositories');
 const countryList = getCountryList();
 
 const checoutViews = {
@@ -16,6 +17,10 @@ const checoutViews = {
          return;
       }
 
+      const customer = await CustomersRepo.findOne({
+         _id: getId(req.session.customerId),
+      });
+
       let paymentType = '';
       if (req.session.cartSubscription) {
          paymentType = '_subscription';
@@ -25,6 +30,7 @@ const checoutViews = {
       res.render(`${config.themeViews}checkout-information`, {
          title: 'Checkout - Information',
          config: req.app.config,
+         customer,
          session: req.session,
          paymentType,
          cartClose: false,

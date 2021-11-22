@@ -24,4 +24,26 @@ router.post('/product/addtocart', productCtrl.addtocart);
 // Totally empty the cart
 router.post('/product/addreview', productCtrl.addreview);
 
+//Filter Products
+router.get('/product/page/:pageNum', productViews.show);
+router.get('/product/page/:pageNum/sortOrder/:sortOrder', productViews.show);
+router.get(
+   '/product/page/:pageNum/sortOrder/:sortOrder/filterTerms/:filterTerms',
+   productViews.show
+);
+router.get(
+   '/product/page/:pageNum/filterTerms/:filterTerms',
+   productViews.show
+);
+router.get('/product/filterTerms/:filterTerms', productViews.show);
+router.get('/product/searchTerm/:searchTerm', productViews.show);
+router.get(
+   '/product/searchTerm/:searchTerm/filterTerms/:filterTerms',
+   productViews.show
+);
+router.get(
+   '/product/sortOrder/:sortOrder/filterTerms/:filterTerms',
+   productViews.show
+);
+
 module.exports = router;

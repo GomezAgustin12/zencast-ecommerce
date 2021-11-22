@@ -188,7 +188,7 @@
     {{/if}}
         {{#unless admin}}
         <nav class="navbar navbar-expand-lg justify-content-between mainNavBar">
-            <a class="navbar-brand" href="/">
+            <a onclick="resetLocalStorage()" class="navbar-brand" href="/">
             {{#if @root.config.cartLogo}}
             <img src="{{@root.config.cartLogo}}" class="img-fluid">
             {{else}}

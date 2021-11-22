@@ -22,6 +22,7 @@ const {
    CartRepo,
    PagesRepo,
 } = require('../repositories');
+const productRepo = require('../repositories/product.repositories');
 const countryList = getCountryList();
 
 // Google products
@@ -381,8 +382,12 @@ router.get('/:page?', async (req, res, next) => {
 
    // if no page is specified, just render page 1 of the cart
    if (!req.params.page) {
-      Promise.all([paginateProducts(true, db, 1, {}, getSort()), getMenu(db)])
-         .then(async ([results, menu]) => {
+      Promise.all([
+         paginateProducts(true, db, 1, {}, getSort()),
+         productRepo.getFilters(),
+         getMenu(db),
+      ])
+         .then(async ([results, filters, menu]) => {
             // If JSON query param return json instead
             if (req.query.json === 'true') {
                res.status(200).json(results.data);
@@ -392,6 +397,7 @@ router.get('/:page?', async (req, res, next) => {
             res.render(`${config.themeViews}index`, {
                title: `${config.cartTitle} - Shop`,
                theme: config.theme,
+               filters: filters,
                results: results.data,
                session: req.session,
                message: clearSessionValue(req.session, 'message'),

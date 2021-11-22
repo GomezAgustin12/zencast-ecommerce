@@ -1,0 +1,15 @@
+<div id='filtros' class='col-4 p-4 d-flex flex-column'>
+   {{#each filters}}
+      <ul class='my-2' id={{this.id}} style='list-style: none;'>
+         <strong>{{this.display}}</strong>
+         {{#each this.items}}
+            <li
+               style='cursor: pointer;'
+               onclick='onFilterChange(this)'
+               id={{sentenceCaseToSnakeCase this}}
+               class='checkbox ml-4'
+            > {{this}}</li>
+         {{/each}}
+      </ul>
+   {{/each}}
+</div>

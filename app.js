@@ -330,6 +330,12 @@ handlebars = handlebars.create({
                 <use xlink:href="/dist/feather-sprite.svg#${icon}"/>
             </svg>`;
       },
+      sentenceCaseToSnakeCase: (string) => {
+         if (typeof string === 'string') {
+            return string.split(' ').join('-');
+         }
+         return string;
+      },
    },
 });
 

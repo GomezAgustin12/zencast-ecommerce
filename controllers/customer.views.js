@@ -29,8 +29,13 @@ const customerViews = {
          sort: { orderDate: -1 },
       });
 
+      const customer = await CustomersRepo.findOne({
+         _id: getId(req.session.customerId),
+      });
+
       res.render(`${config.themeViews}customer-account`, {
          title: 'Orders',
+         customer,
          session: req.session,
          orders,
          message: clearSessionValue(req.session, 'message'),

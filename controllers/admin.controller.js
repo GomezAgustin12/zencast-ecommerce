@@ -87,6 +87,13 @@ const adminCtrl = {
             productAddedDate: new Date(),
             productStock: safeParseInt(req.body.productStock) || null,
             productStockDisable: convertBool(req.body.productStockDisable),
+            productHashrate: cleanHtml(req.body.productHashrate),
+            productCondition: cleanHtml(req.body.productCondition),
+            productAlgorithm: cleanHtml(req.body.productAlgorithm),
+            productWeight: safeParseInt(req.body.productWeight),
+            productElectricityUsage: safeParseInt(
+               req.body.productElectricityUsage
+            ),
          };
 
          // Validate the body against schema
@@ -279,6 +286,13 @@ const adminCtrl = {
          productComment: checkboxBool(req.body.productComment),
          productStock: safeParseInt(req.body.productStock) || null,
          productStockDisable: convertBool(req.body.productStockDisable),
+         productCondition: cleanHtml(req.body.productCondition),
+         productAlgorithm: cleanHtml(req.body.productAlgorithm),
+         productWeight: safeParseInt(req.body.productWeight),
+         productElectricityUsage: safeParseInt(
+            req.body.productElectricityUsage
+         ),
+         productHashrate: cleanHtml(req.body.productHashrate),
       };
 
       // Validate the body again schema

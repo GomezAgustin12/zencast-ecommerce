@@ -63,6 +63,11 @@ test('[Success] Add a product', async (t) => {
       productTags: 'organic, jacket',
       productComment: false,
       productStock: 50,
+      productCondition: 'new',
+      productAlgorithm: 'algorithm 1',
+      productWeight: 230,
+      productElectricityUsage: 200,
+      productHashrate: 'hashRate 1',
    };
 
    const res = await g.request
@@ -139,6 +144,11 @@ test('[Success] Update a product', async (t) => {
       productTags: 'organic, jacket',
       productComment: true,
       productStock: 50,
+      productCondition: 'new',
+      productAlgorithm: 'algorithm 1',
+      productWeight: 230,
+      productElectricityUsage: 200,
+      productHashrate: 'hashRate 1',
    };
 
    const res = await g.request

@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="row ml-0 mr-0">
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <div class="form-group">
                     <label for="productPrice" class="control-label">{{ @root.__ "Product price" }} *</label>
                     <div class="input-group">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <div class="form-group">
                     <label for="productGtin" class="control-label">{{ @root.__ "Product GTIN" }}</label>
                     <div class="input-group">
@@ -36,13 +36,56 @@
                     <p class="help-block">{{ @root.__ "The Serial number, GTIN or Barcode" }}</p>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <div class="form-group">
                     <label for="productBrand" class="control-label">{{ @root.__ "Product Brand" }}</label>
                     <div class="input-group">
                         <input type="text" id="productBrand" class="form-control" value="{{productBrand}}" />
                     </div>
                     <p class="help-block">{{ @root.__ "The brand of the product" }}</p>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="productCondition" class="control-label">{{ @root.__ "Condition" }}</label>
+                    <select class="form-control" id="productCondition">
+                        <option value="new" selected>{{ @root.__ "New" }}</option>
+                        <option value="used">{{ @root.__ "Used" }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row ml-0 mr-0">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="productAlgorithm" class="control-label">{{ @root.__ "Algorithm" }} </label>
+                    <div class="input-group">
+                        <input type="text" id="productAlgorithm" class="form-control" step="any" value="{{productAlgorithm}}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="productHashrate" class="control-label">{{ @root.__ "Hashrate" }}</label>
+                    <div class="input-group">
+                        <input type="text" id="productHashrate" class="form-control" step="any" value="{{productHashrate}}" />
+                    </div>       
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="productWeight" class="control-label">{{ @root.__ "Weight" }}</label>
+                    <div class="input-group">
+                        <input type="number" id="productWeight" class="form-control" value="{{productWeight}}" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="productElectricityUsage" class="control-label">{{ @root.__ "Electricity Usage" }}</label>
+                    <div class="input-group">
+                        <input type="number" id="productElectricityUsage" class="form-control" value="{{productElectricityUsage}}" />
+                    </div>
                 </div>
             </div>
         </div>

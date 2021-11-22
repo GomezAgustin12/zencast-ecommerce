@@ -8,6 +8,8 @@ const {
 } = require('../repositories');
 const { getRatingHtml } = require('../lib/modules/reviews-basic');
 const stripHtml = require('string-strip-html');
+const colors = require('colors');
+const { paginateProducts, getSort } = require('../lib/paginate');
 
 const productViews = {
    product: async (req, res) => {
@@ -148,6 +150,83 @@ const productViews = {
          showFooter: 'showFooter',
          menu: sortMenu(await getMenu(db)),
       });
+   },
+   show: (req, res) => {
+      const db = req.app.db;
+      const searchTerm = req.params.searchTerm;
+      let filterTerms = req.params.filterTerms
+         ? JSON.parse(req.params.filterTerms)
+         : {};
+
+      filterTerms = Object.keys(filterTerms).reduce((accum, current) => {
+         accum[current] = filterTerms[current].split('-').join(' ');
+         return accum;
+      }, {});
+
+      const sortOrder = req.params.sortOrder;
+      const productsIndex = req.app.productsIndex;
+      const config = req.app.config;
+      const numberProducts = config.productsPerPage
+         ? config.productsPerPage
+         : 6;
+
+      const lunrIdArray = [];
+      if (searchTerm) {
+         productsIndex.search(searchTerm).forEach((id) => {
+            lunrIdArray.push(getId(id.ref));
+         });
+      }
+
+      let pageNum = 1;
+      if (req.params.pageNum) {
+         pageNum = req.params.pageNum;
+      }
+
+      Promise.all([
+         paginateProducts(
+            true,
+            db,
+            pageNum,
+            searchTerm ? { _id: { $in: lunrIdArray } } : {},
+            sortOrder ? getSort(sortOrder) : getSort(),
+            [filterTerms]
+         ),
+         ProductRepo.getFilters(
+            searchTerm ? { _id: { $in: lunrIdArray } } : {},
+            filterTerms
+         ),
+         getMenu(db),
+      ])
+         .then(([results = [], filters, menu]) => {
+            // If JSON query param return json instead
+            if (req.query.json === 'true') {
+               res.status(200).json(results.data);
+               return;
+            }
+
+            res.render(`${config.themeViews}index`, {
+               title: 'Results',
+               results: results.data,
+               filters: filters,
+               filtered: true,
+               session: req.session,
+               metaDescription: `${req.app.config.cartTitle} - Search term: ${searchTerm}`,
+               searchTerm: searchTerm,
+               message: clearSessionValue(req.session, 'message'),
+               messageType: clearSessionValue(req.session, 'messageType'),
+               productsPerPage: numberProducts,
+               totalProductCount: results.totalItems,
+               pageNum: pageNum,
+               paginateUrl: '',
+               config: config,
+               menu: sortMenu(menu),
+               helpers: req.handlebars.helpers,
+               showFooter: 'showFooter',
+            });
+         })
+         .catch((err) => {
+            console.error(colors.red('Error searching for products', err));
+         });
    },
 };
 

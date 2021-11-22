@@ -50,6 +50,39 @@
                     </div>
                 </div>
             </div>
+            <div class="row ml-0 mr-0">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="productAlgorithm" class="control-label">{{ @root.__ "Algorithm" }} </label>
+                    <div class="input-group">
+                        <input type="text" id="productAlgorithm" class="form-control" step="any" value="{{result.productAlgorithm}}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="productHashrate" class="control-label">{{ @root.__ "Hashrate" }}</label>
+                    <div class="input-group">
+                        <input type="text" id="productHashrate" class="form-control" step="any" value="{{result.productHashrate}}" />
+                    </div>       
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="productWeight" class="control-label">{{ @root.__ "Weight" }}</label>
+                    <div class="input-group">
+                        <input type="number" id="productWeight" class="form-control" value="{{result.productWeight}}" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="productElectricityUsage" class="control-label">{{ @root.__ "Electricity Usage" }}</label>
+                    <div class="input-group">
+                        <input type="number" id="productElectricityUsage" class="form-control" value="{{result.productElectricityUsage}}" />
+                    </div>
+                </div>
+            </div>
             {{#if config.trackStock}}
             <div class="row">
                 <div class="col-sm-5 ml-3">
