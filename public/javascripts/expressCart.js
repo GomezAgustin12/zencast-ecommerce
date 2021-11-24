@@ -1,11 +1,7 @@
 /* eslint-disable prefer-arrow-callback, no-var, no-tabs, prefer-template */
 /* globals showNotification, numeral, feather */
 
-const resetLocalStorage = () => {
-   localStorage.removeItem('sortOrder');
-   localStorage.removeItem('filterTerms');
-   localStorage.removeItem('searchTerms');
-};
+
 
 
 $(document).ready(function () {
@@ -642,13 +638,17 @@ $(document).ready(function () {
       onFilterChange(e.target)
    })
 
-   $('#home-btn').on('click', (e)=> {
+   $(document).on('click','#home-btn', (e)=> {
       console.log('ACA')
-      resetLocalStorage()
+      localStorage.removeItem('sortOrder');
+      localStorage.removeItem('filterTerms');
+      localStorage.removeItem('searchTerms');
    })
 
    $('.navbar-brand').on('click', () => {
-      resetLocalStorage()
+      localStorage.removeItem('sortOrder');
+      localStorage.removeItem('filterTerms');
+      localStorage.removeItem('searchTerms');
    })
 
    $('#order_select').on('change', (e) =>{
@@ -992,3 +992,8 @@ const onSortOrderChange = () => {
    window.location.pathname = `product/sortOrder/${sortOrder}/filterTerms/${filterTerms}`;
 };
 
+const resetLocalStorage = () => {
+   localStorage.removeItem('sortOrder');
+   localStorage.removeItem('filterTerms');
+   localStorage.removeItem('searchTerms');
+};
