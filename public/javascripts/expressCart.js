@@ -646,6 +646,7 @@ $(document).ready(function () {
    })
 
    $('.navbar-brand').on('click', () => {
+      console.log('🍷')
       localStorage.removeItem('sortOrder');
       localStorage.removeItem('filterTerms');
       localStorage.removeItem('searchTerms');
