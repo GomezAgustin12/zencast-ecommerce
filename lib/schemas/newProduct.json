@@ -18,8 +18,7 @@
       },
       "productDescription": {
          "type": "string",
-         "isNotEmpty": true,
-         "minLength": 25
+         "isNotEmpty": true
       },
       "productGtin": {
          "type": ["string", "null"],

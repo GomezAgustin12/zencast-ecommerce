@@ -8,7 +8,6 @@ const {
    OrdersRepo,
    VariantsRepo,
 } = require('../repositories');
-const { paginateData } = require('../lib/paginate');
 
 const adminViews = {
    logout: (req, res) => {
@@ -102,11 +101,10 @@ const adminViews = {
       }
 
       // Get our paginated data
-      const products = await paginateData(
+      const products = await ProductRepo.paginate(
          false,
          req,
          pageNum,
-         'products',
          {},
          { productAddedDate: -1 }
       );

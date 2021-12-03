@@ -1,6 +1,4 @@
 const { getId, clearSessionValue } = require('../lib/common');
-
-const { paginateData } = require('../lib/paginate');
 const { ReviewsRepo } = require('../repositories');
 
 const reviewsViews = {
@@ -11,11 +9,10 @@ const reviewsViews = {
       }
 
       // Get our paginated data
-      const reviews = await paginateData(
+      const reviews = await ReviewsRepo.paginate(
          false,
          req,
          pageNum,
-         'reviews',
          {},
          { date: -1 }
       );

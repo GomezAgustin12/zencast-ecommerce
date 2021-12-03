@@ -11,7 +11,7 @@ const {
    addSitemapProducts,
    getCountryList,
 } = require('../lib/common');
-const { getSort, paginateProducts } = require('../lib/paginate');
+const { getSort } = require('../lib/paginate');
 const { getPaymentConfig } = require('../lib/config');
 const { emptyCart } = require('../lib/cart');
 const { sortMenu, getMenu } = require('../lib/menu');
@@ -196,9 +196,8 @@ router.get('/search/:searchTerm/:pageNum?', (req, res) => {
    }
 
    Promise.all([
-      paginateProducts(
+      ProductRepo.paginate(
          true,
-         db,
          pageNum,
          { _id: { $in: lunrIdArray } },
          getSort()
@@ -255,9 +254,8 @@ router.get('/category/:cat/:pageNum?', (req, res) => {
    }
 
    Promise.all([
-      paginateProducts(
+      ProductRepo.paginate(
          true,
-         db,
          pageNum,
          { _id: { $in: lunrIdArray } },
          getSort()
@@ -342,7 +340,7 @@ router.get('/page/:pageNum', (req, res, next) => {
    const numberProducts = config.productsPerPage ? config.productsPerPage : 6;
 
    Promise.all([
-      paginateProducts(true, db, req.params.pageNum, {}, getSort()),
+      ProductRepo.paginate(true, req.params.pageNum, {}, getSort()),
       getMenu(db),
    ])
       .then(([results, menu]) => {
@@ -383,7 +381,7 @@ router.get('/:page?', async (req, res, next) => {
    // if no page is specified, just render page 1 of the cart
    if (!req.params.page) {
       Promise.all([
-         paginateProducts(true, db, 1, {}, getSort()),
+         ProductRepo.paginate(true, 1, {}, getSort()),
          productRepo.getFilters(),
          getMenu(db),
       ])
@@ -395,7 +393,7 @@ router.get('/:page?', async (req, res, next) => {
             }
 
             res.render(`${config.themeViews}index`, {
-               title: `${config.cartTitle} - Shop`,
+               title: `${config.cartTitle} x- Shop`,
                theme: config.theme,
                filters: filters,
                results: results.data,

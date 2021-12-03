@@ -143,6 +143,31 @@ $(document).ready(function () {
          });
    });
 
+   //modal tracking number
+   $(document).on('click', '#buttonTrackingNumber', function (e) {
+      var id = $('#tracking_id').val();
+      var trackingNumber = $('#inputTN').val();
+      var trackingCompany = $('#trackingCompany').val();
+      var trackingURL = $('#trackingURL').val();
+
+      $.ajax({
+         method: 'POST',
+         url: '/admin/order/trackingnumber',
+         data: {
+            order_id: id,
+            orderTrackingNumber: trackingNumber,
+            trackingCompany: trackingCompany,
+            trackingURL: trackingURL,
+         },
+      })
+         .done(function (msg) {
+            showNotification(msg.message, 'success', true);
+         })
+         .fail(function (msg) {
+            showNotification(msg.responseJSON.message, 'danger');
+         });
+   });
+
    $(document).on('click', '#btnUserAdd', function (e) {
       $('#userNewForm').submit();
    });

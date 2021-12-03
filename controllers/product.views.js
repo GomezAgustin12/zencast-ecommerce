@@ -9,7 +9,7 @@ const {
 const { getRatingHtml } = require('../lib/modules/reviews-basic');
 const stripHtml = require('string-strip-html');
 const colors = require('colors');
-const { paginateProducts, getSort } = require('../lib/paginate');
+const { getSort } = require('../lib/paginate');
 
 const productViews = {
    product: async (req, res) => {
@@ -183,9 +183,8 @@ const productViews = {
       }
 
       Promise.all([
-         paginateProducts(
+         ProductRepo.paginate(
             true,
-            db,
             pageNum,
             searchTerm ? { _id: { $in: lunrIdArray } } : {},
             sortOrder ? getSort(sortOrder) : getSort(),

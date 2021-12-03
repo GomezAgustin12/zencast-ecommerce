@@ -3,12 +3,12 @@ const {
    sendEmail,
    getEmailTemplate,
    clearCustomer,
-   randomNumber,
 } = require('../lib/common');
 const { emptyCart } = require('../lib/cart');
 const { indexOrders } = require('../lib/indexing');
 const OrdersRepo = require('../repositories/orders.repositories');
 const colors = require('colors');
+const { validateJson } = require('../lib/schema');
 
 const orderCtrl = {
    create: async (req, res) => {
@@ -44,7 +44,9 @@ const orderCtrl = {
             orderPhoneNumber: req.body.phone || req.session.customerPhone,
             orderComment: req.body.orderComment || req.session.orderComment,
             orderStatus: req.body.orderStatus,
-            orderTrackingNumber: randomNumber(),
+            orderTrackingNumber: null,
+            trackingCompany: null,
+            trackingURL: null,
             orderDate: new Date(),
             orderProducts: req.session.cart,
             orderType: 'Single',
@@ -148,6 +150,36 @@ const orderCtrl = {
          return res
             .status(200)
             .json({ message: 'Status successfully updated' });
+      } catch (error) {
+         console.error('🔥🔥', colors.red(error));
+         return res
+            .status(400)
+            .json({ message: 'Failed to update the order status' });
+      }
+   },
+   setTrackingNumber: async (req, res) => {
+      try {
+         const schemaValidate = validateJson('newTrackingNumber', req.body);
+         if (!schemaValidate.result) {
+            if (process.env.NODE_ENV !== 'test') {
+               console.log('schemaValidate errors', schemaValidate.errors);
+            }
+            res.status(400).json(schemaValidate.errors);
+            return;
+         }
+
+         await OrdersRepo.updateOne({
+            query: { _id: getId(req.body.order_id) },
+            set: {
+               orderTrackingNumber: parseInt(req.body.orderTrackingNumber),
+               trackingCompany: req.body.trackingCompany,
+               trackingURL: req.body.trackingURL,
+               orderStatus: 'Shipped',
+            },
+         });
+         return res
+            .status(200)
+            .json({ message: 'Tracking Number successfully update' });
       } catch (error) {
          console.error('🔥🔥', colors.red(error));
          return res

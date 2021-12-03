@@ -27,6 +27,8 @@
             <li class="list-group-item"><strong> {{ @root.__ "Order date" }}: </strong><span class="float-right">{{formatDate result.orderDate "DD/MM/YYYY hh:mmA"}}</span></li>
             <li class="list-group-item"><strong> {{ @root.__ "Order ID" }}: </strong><span class="float-right">{{result._id}}</span></li>
             <li class="list-group-item"><strong> {{ @root.__ "Tracking Number" }}: </strong><span class="float-right">{{result.orderTrackingNumber}}</span></li>
+            <li class="list-group-item"><strong> {{ @root.__ "Tracking Company" }}: </strong><span class="float-right">{{result.trackingCompany}}</span></li>
+            <li class="list-group-item"><strong> {{ @root.__ "Tracking URL" }}: </strong><span class="float-right">{{result.trackingURL}}</span></li>
             <li class="list-group-item"><strong> {{ @root.__ "Payment Gateway ref" }}: </strong><span class="float-right">{{result.orderPaymentId}}</span></li>
             <li class="list-group-item"><strong> {{ @root.__ "Payment Gateway" }}: </strong><span class="float-right">{{result.orderPaymentGateway}}</span></li>
             {{#if result.orderExpectedBtc }}

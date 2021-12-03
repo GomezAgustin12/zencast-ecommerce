@@ -86,6 +86,8 @@
                                             <li class="list-group-item"><strong> {{ @root.__ "Order Blockonomics Txid" }}: </strong><span class="float-right">{{this.orderBlockonomicsTxid}}</span></li>
                                             {{/if}}
                                             <li class="list-group-item"><strong> {{ @root.__ "Tracking Number" }}: </strong><span class="float-right">{{this.orderTrackingNumber}}</span></li>
+                                            <li class="list-group-item"><strong> {{ @root.__ "Tracking Company" }}: </strong><span class="float-right">{{this.trackingCompany}}</span></li>
+                                            <li class="list-group-item"><strong> {{ @root.__ "Tracking URL" }}: </strong><a class="float-right" href="{{this.trackingURL}}" target="_blank"><u>Ir al sitio</u></a></li>
                                             <li class="list-group-item"><strong> {{ @root.__ "Order net amount" }}: </strong><span class="float-right">{{currencySymbol config.currencySymbol}}{{formatAmount (math this.orderTotal '-' this.orderShipping)}}</span></li>
                                             <li class="list-group-item"><strong> {{ @root.__ "Order shipping amount" }}: </strong><span class="float-right">{{currencySymbol config.currencySymbol}}{{formatAmount this.orderShipping}}</span></li>
                                             <li class="list-group-item"><strong> {{ @root.__ "Order total amount" }}: </strong><span class="float-right">{{currencySymbol config.currencySymbol}}{{formatAmount this.orderTotal}}</span></li>

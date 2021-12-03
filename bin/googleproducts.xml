@@ -133,5 +133,23 @@
             <g:availability>in stock</g:availability>
             <g:gtin>21</g:gtin>
         </item>
+        <item>
+            <g:title>test-guido</g:title>
+            <g:id>619fefb0d8e4fe0004428653</g:id>
+            <g:link>http://localhost:1111/product/test-guido</g:link>
+            <g:description>&lt;p&gt;Descripción Test del producto es&lt;span&gt;te. Esta buenísimo!&lt;/span&gt;&lt;/p&gt;</g:description>
+            <g:price>213.00 USD</g:price>
+            <g:image_link>http://localhost:1111/uploads/placeholder.png</g:image_link>
+            <g:availability>in stock</g:availability>
+        </item>
+        <item>
+            <g:title>draft</g:title>
+            <g:id>619ff01bd8e4fe0004428654</g:id>
+            <g:link>http://localhost:1111/product/draft</g:link>
+            <g:description>&lt;p&gt;asdfasdf asdfasdfasdf asdfasdfasdf asdfasdfasd asdf&lt;/p&gt;</g:description>
+            <g:price>16.00 USD</g:price>
+            <g:image_link>http://localhost:1111/uploads/placeholder.png</g:image_link>
+            <g:availability>in stock</g:availability>
+        </item>
     </channel>
 </rss>

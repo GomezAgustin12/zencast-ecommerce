@@ -77,7 +77,7 @@ test('[Fail] Create with invalid email address', async (t) => {
 
    t.deepEqual(
       res.body.message,
-      'Failed to insert customer: should match format "emailAddress"'
+      'Failed to insert customer: /email should match format "emailAddress"'
    );
 });
 
@@ -95,8 +95,6 @@ test('[Success] Update existing customer from dashboard', async (t) => {
       postcode: '2000',
       phone: '0444444444',
    };
-
-   console.log(g.users[0].apiKey);
 
    const res = await g.request
       .post('/admin/customer/update')

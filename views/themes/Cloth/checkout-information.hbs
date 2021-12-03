@@ -45,14 +45,14 @@
                         </div>
                     </div>
                     {{/unless}}
-                    {{#if @root.session.customerPresent}}
+                    {{!-- {{#if @root.session.customerPresent}}
                     <div class="row bottom-marg-15">
                         <div class="col-sm-12">
                             <button id="customerLogout"
                                 class="btn btn-primary float-right">{{ @root.__ "Change customer" }}</button>
                         </div>
                     </div>
-                    {{/if}}
+                    {{/if}} --}}
                     <form id="shipping-form" class="shipping-form" role="form" data-toggle="validator" novalidate="false">
                         {{> themes/Cloth/shipping-form}}
                         <div class="row">

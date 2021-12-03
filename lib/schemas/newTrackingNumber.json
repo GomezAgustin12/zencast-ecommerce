@@ -1,0 +1,23 @@
+{
+    "$id": "newTrackingNumber",
+    "type": "object",
+    "properties": {
+        "order_id": {
+            "type": "string"
+        },
+        "orderTrackingNumber": {
+            "type": "string"
+        },
+        "trackingCompany": {
+            "type": "string"
+        },
+        "trackingURL": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "orderTrackingNumber",
+        "trackingCompany",
+        "trackingURL"
+    ]
+}

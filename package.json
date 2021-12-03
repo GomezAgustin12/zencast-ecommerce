@@ -18,7 +18,8 @@
    "ava": {
       "serial": true,
       "files": [
-         "./test/specs/*.js"
+         "./test/specs/*.js",
+         "./test/repositories/*.js"
       ],
       "timeout": "10s",
       "verbose": true,

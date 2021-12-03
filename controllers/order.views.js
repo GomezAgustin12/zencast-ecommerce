@@ -1,5 +1,4 @@
 const { getId, clearSessionValue, getCountryList } = require('../lib/common');
-const { paginateData } = require('../lib/paginate');
 const OrderRepo = require('../repositories/orders.repositories');
 
 const orderViews = {
@@ -56,11 +55,10 @@ const orderViews = {
       }
 
       // Get our paginated data
-      const orders = await paginateData(
+      const orders = await OrderRepo.paginate(
          false,
          req,
          pageNum,
-         'orders',
          {},
          { orderDate: -1 }
       );
@@ -73,9 +71,14 @@ const orderViews = {
          return;
       }
 
+      const transformMongoIdToString = orders.data.map((order) => ({
+         ...order,
+         _id: order._id.toString(),
+      }));
+
       res.render('orders', {
          title: 'Cart',
-         orders: orders.data,
+         orders: transformMongoIdToString,
          totalItemCount: orders.totalItems,
          pageNum,
          paginateUrl: 'admin/order',

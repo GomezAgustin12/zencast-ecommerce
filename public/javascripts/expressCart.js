@@ -1,9 +1,6 @@
 /* eslint-disable prefer-arrow-callback, no-var, no-tabs, prefer-template */
 /* globals showNotification, numeral, feather */
 
-
-
-
 $(document).ready(function () {
    if ($(window).width() < 768) {
       $('.menu-side').on('click', function (e) {
@@ -126,7 +123,7 @@ $(document).ready(function () {
 
       var pagerHref =
          '/product/' +
-         // 'page' +
+         'page' +
          paginateUrl +
          '/' +
          searchTerm +
@@ -634,27 +631,24 @@ $(document).ready(function () {
    });
 
    $(document).on('click', '.filterSelect', function (e) {
-      console.log('ACA')
-      onFilterChange(e.target)
-   })
+      onFilterChange(e.target);
+   });
 
-   $(document).on('click','#home-btn', (e)=> {
-      console.log('ACA')
+   $(document).on('click', '#home-btn', (e) => {
       localStorage.removeItem('sortOrder');
       localStorage.removeItem('filterTerms');
       localStorage.removeItem('searchTerms');
-   })
+   });
 
    $('.navbar-brand').on('click', () => {
-      console.log('🍷')
       localStorage.removeItem('sortOrder');
       localStorage.removeItem('filterTerms');
       localStorage.removeItem('searchTerms');
-   })
+   });
 
-   $('#order_select').on('change', (e) =>{
-      onSortOrderChange()
-   })
+   $('#order_select').on('change', (e) => {
+      onSortOrderChange();
+   });
 
    // search button click event
    $(document).on('click', '#btn_search', function (e) {
@@ -986,11 +980,13 @@ const onSortOrderChange = () => {
 
    localStorage.setItem('sortOrder', sortOrder);
 
-   if (filterTerms === '') {
-      window.location.pathname = `product/sortOrder/${sortOrder}`;
-   }
+   console.log(!filterTerms);
 
-   window.location.pathname = `product/sortOrder/${sortOrder}/filterTerms/${filterTerms}`;
+   if (!filterTerms || filterTerms === '') {
+      window.location.pathname = `product/sortOrder/${sortOrder}`;
+   } else {
+      window.location.pathname = `product/sortOrder/${sortOrder}/filterTerms/${filterTerms}`;
+   }
 };
 
 const resetLocalStorage = () => {

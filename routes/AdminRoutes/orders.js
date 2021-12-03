@@ -24,6 +24,13 @@ router.get('/delete/:id', restrict, orderCtrl.delete);
 // update order status
 router.post('/statusupdate', restrict, checkAccess, orderCtrl.updateStatus);
 
+router.post(
+   '/trackingnumber',
+   restrict,
+   checkAccess,
+   orderCtrl.setTrackingNumber
+);
+
 // Show orders
 router.get('/:page?', restrict, orderViews.show);
 

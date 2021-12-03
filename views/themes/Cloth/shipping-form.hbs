@@ -85,9 +85,14 @@
             class='form-control'
             id='shipCountry'
             name='shipCountry'
+            value={{customer.country}}
             required
          >
-            <option value='' disabled selected>Select Country</option>
+            {{#if customer.country}}
+               <option value={{customer.country}}>{{customer.country}}</option>
+            {{else}}
+               <option value='' disabled selected>Select Country</option>
+            {{/if}}
             {{#each countryList}}
                <option
                   {{selectState this customer.country}}

@@ -81,11 +81,15 @@ const customerService = {
          const customerObj = filledCustomerObject(req);
 
          CustomerRepo.validateSchema('editCustomer', customerObj);
-         await CustomerRepo.checkCustomerExistById(getId(req.body.customerId));
+         await CustomerRepo.checkCustomerExistById(
+            getId(req.session.customerId)
+         );
 
          // Update customer
          const updatedCustomer = await CustomerRepo.updateOne({
-            query: { _id: getId(req.body.customerId) },
+            query: {
+               _id: getId(req.session.customerId),
+            },
             set: customerObj,
          });
          indexCustomers(req.app).then(() => {
@@ -129,6 +133,7 @@ const customerService = {
             query: { email: req.body.email },
             set: customerObj,
          });
+         console.log(updatedCustomer);
 
          indexCustomers(req.app).then(() => {
             const returnCustomer = updatedCustomer.value;

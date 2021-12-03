@@ -18,7 +18,7 @@
         
             <div class="row">
                 <b class="mr-2 my-auto">Ordenar por</b>
-                <select onchange="onSortOrderChange()" class="custom-select-sm border-none" id="order_select">
+                <select class="custom-select-sm border-none" id="order_select">
                     <option value="asc">Menor precio</option>
                     <option value="des">Mayor precio</option>
                 </select></div>
@@ -105,3 +105,8 @@
 <div class="col-md-12">
     <div id="pager" class="d-flex justify-content-center"></div>
 </div>
+<script>
+if (location.pathname === '/') {
+   resetLocalStorage();
+}
+</script>

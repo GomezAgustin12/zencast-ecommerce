@@ -37,6 +37,7 @@ router.get(
 );
 router.get('/product/filterTerms/:filterTerms', productViews.show);
 router.get('/product/searchTerm/:searchTerm', productViews.show);
+router.get('/product/sortOrder/:sortOrder', productViews.show);
 router.get(
    '/product/searchTerm/:searchTerm/filterTerms/:filterTerms',
    productViews.show
