@@ -67,11 +67,11 @@ const productRepo = {
       }
 
       if (filter) {
-         query = { $and: [{ ...query }, ...filter] };
+         query = { $and: [{ ...query }, { ...filter }] };
       }
 
-      if (!sort) {
-         sort = {};
+      if (!sort || Object.keys(sort).length === 0) {
+         sort = { productPrice: -1 };
       }
 
       try {
@@ -106,6 +106,7 @@ const productRepo = {
          const returnData = { data: res, totalItems: result[1] };
          return returnData;
       } catch (err) {
+         console.log('🤪', err);
          throw new Error('Error retrieving paginated data');
       }
    },

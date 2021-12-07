@@ -103,7 +103,6 @@ const adminViews = {
       // Get our paginated data
       const products = await ProductRepo.paginate(
          false,
-         req,
          pageNum,
          {},
          { productAddedDate: -1 }
