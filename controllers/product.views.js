@@ -188,7 +188,7 @@ const productViews = {
             pageNum,
             searchTerm ? { _id: { $in: lunrIdArray } } : {},
             sortOrder ? getSort(sortOrder) : getSort(),
-            [filterTerms]
+            filterTerms
          ),
          ProductRepo.getFilters(
             searchTerm ? { _id: { $in: lunrIdArray } } : {},

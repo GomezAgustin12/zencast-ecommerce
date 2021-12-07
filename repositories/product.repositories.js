@@ -44,7 +44,6 @@ const productRepo = {
    },
    /**
     * @param  {boolean} frontend // whether or not this is an front or admin call
-    * @param  {req} req // express `req` object
     * @param  {integer} page // The page number
     * @param  {string} collection // The collection to search
     * @param  {object} query // The mongo query
@@ -66,8 +65,12 @@ const productRepo = {
          query = {};
       }
 
-      if (filter) {
-         query = { $and: [{ ...query }, { ...filter }] };
+      if (!filter || Object.keys(filter).length === 0) {
+         if (Object.keys(query).length !== 0) {
+            query = { $and: [{ ...query }, { ...filter }] };
+         } else {
+            query = { ...filter };
+         }
       }
 
       if (!sort || Object.keys(sort).length === 0) {
