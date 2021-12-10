@@ -2,16 +2,9 @@ const baseRepository = require('./baseRepository');
 const { getDb } = require('../lib/db');
 const filters = require('../config/filter.json');
 const { getConfig } = require('../lib/config');
-const Decimal128 = require('mongodb').Decimal128;
-const colors = require('colors');
 
 const db = getDb();
 const collection = db.products;
-
-const objIncludesField = (obj = {}, field) => {
-   if (Object.keys(obj).includes(field)) return true;
-   return false;
-};
 
 const productRepo = {
    ...baseRepository(collection),
@@ -83,7 +76,7 @@ const productRepo = {
       }
 
       if (!sort || Object.keys(sort).length === 0) {
-         sort = { productPrice: -1 };
+         sort = { productPrice: 1 };
       }
 
       const skipAndLimit = (arr, skip) => {
