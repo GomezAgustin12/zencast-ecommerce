@@ -15,30 +15,8 @@ const objIncludesField = (obj = {}, field) => {
 
 const productRepo = {
    ...baseRepository(collection),
-   insertOne: async (doc) =>
-      await collection.insertOne({
-         ...doc,
-         productPrice: Decimal128.fromString(doc.productPrice),
-      }),
-   updateOne: async ({ query = {}, set = {}, options = {} }) => {
-      try {
-         return await collection.findOneAndUpdate(
-            query,
-            {
-               $set: objIncludesField(set, 'productPrice')
-                  ? {
-                       ...set,
-                       productPrice: Decimal128.fromString(set.productPrice),
-                    }
-                  : set,
-            },
-            { multi: false, returnOriginal: false, ...options }
-         );
-      } catch (error) {
-         console.error('🔥🔥', colors.red(error));
-         throw Error(error);
-      }
-   },
+   insertOne: async (doc) => await collection.insertOne({ ...doc }),
+
    getFilters: async (query, filterTerms = {}) => {
       if (!query) {
          query = {};
