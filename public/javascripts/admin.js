@@ -126,6 +126,43 @@ $(document).ready(function () {
          }
       });
 
+   $('#bankingAccountData')
+      .validator()
+      .on('submit', function (e) {
+         if (!e.isDefaultPrevented()) {
+            e.preventDefault();
+            $.ajax({
+               method: 'POST',
+               url: '/admin/settings/banking-account-data',
+               data: {
+                  bankingAccountData: $('#banking-account-data').val(),
+               },
+            })
+               .done(function (msg) {
+                  showNotification(msg.message, 'success');
+               })
+               .fail(function (msg) {
+                  if (msg.responseJSON.length > 0) {
+                     var errorMessages = validationErrors(msg.responseJSON);
+                     $('#validationModalBody').html(errorMessages);
+                     $('#validationModal').modal('show');
+                     return;
+                  }
+                  showNotification(msg.responseJSON.message, 'danger');
+               });
+         }
+      });
+
+   $('#trackingNumberModal').on('shown.bs.modal', function (e) {
+      const trackingNumber = $('#orderTrackingNumber').val();
+      const trackingCompany = $('#trackCompany').val();
+      const trackingURL = $('#trackURL').val();
+
+      $('#inputTN').val(trackingNumber);
+      $('#trackingCompany').val(trackingCompany);
+      $('#trackingURL').val(trackingURL);
+   });
+
    $(document).on('click', '#orderStatusUpdate', function (e) {
       $.ajax({
          method: 'POST',

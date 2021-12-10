@@ -1,7 +1,7 @@
 const escape = require('html-entities').AllHtmlEntities;
 const { clearSessionValue, getThemes, getId } = require('../lib/common');
 const { sortMenu, getMenu } = require('../lib/menu');
-const { PagesRepo, DiscountRepo } = require('../repositories');
+const { PagesRepo, DiscountRepo, WireAccount } = require('../repositories');
 
 const settingsViews = {
    settings: (req, res) => {
@@ -47,6 +47,24 @@ const settingsViews = {
          title: 'Static pages',
          pages: pages,
          session: req.session,
+         admin: true,
+         message: clearSessionValue(req.session, 'message'),
+         messageType: clearSessionValue(req.session, 'messageType'),
+         helpers: req.handlebars.helpers,
+         config: req.app.config,
+         menu: sortMenu(await getMenu(db)),
+         csrfToken: req.csrfToken(),
+      });
+   },
+
+   bankDetails: async (req, res) => {
+      const db = req.app.db;
+      const wireAccount = await WireAccount.findOne();
+
+      res.render('banking-account-data', {
+         title: 'Bank Account Details',
+         session: req.session,
+         wireAccount: wireAccount.bankingAccountData,
          admin: true,
          message: clearSessionValue(req.session, 'message'),
          messageType: clearSessionValue(req.session, 'messageType'),

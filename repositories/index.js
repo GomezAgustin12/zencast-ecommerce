@@ -7,8 +7,9 @@ const PagesRepo = require('./pages.repositories');
 const ProductRepo = require('./product.repositories');
 const ReviewsRepo = require('./reviews.repositories');
 const SessionsRepo = require('./sessions.repositories');
-const UserRepo = require('./user.repositorires');
+const UserRepo = require('./user.repositories');
 const VariantsRepo = require('./variants.repositories');
+const WireAccount = require('./wireAccount.repositories');
 
 module.exports = {
    CartRepo,
@@ -22,4 +23,5 @@ module.exports = {
    SessionsRepo,
    UserRepo,
    VariantsRepo,
+   WireAccount,
 };

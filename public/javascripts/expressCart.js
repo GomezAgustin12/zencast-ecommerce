@@ -611,6 +611,11 @@ $(document).ready(function () {
       $('#confirmModal').modal('hide');
    });
 
+   $('#wireAccountModal').on('shown.bs.modal', function (e) {
+      const wireAccountValue = $('#wireAccountInput').val();
+      $('#wireAccountModalDetails').html(wireAccountValue);
+   });
+
    $('.qty-btn-minus').on('click', function () {
       var number = parseInt($('#product_quantity').val()) - 1;
       $('#product_quantity').val(number > 0 ? number : 1);
@@ -976,11 +981,10 @@ const onFilterChange = (target) => {
 
 const onSortOrderChange = () => {
    const sortOrder = $('#order_select').val();
+
    const filterTerms = localStorage.getItem('filterTerms');
 
    localStorage.setItem('sortOrder', sortOrder);
-
-   console.log(!filterTerms);
 
    if (!filterTerms || filterTerms === '') {
       window.location.pathname = `product/sortOrder/${sortOrder}`;

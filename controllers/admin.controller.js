@@ -131,6 +131,88 @@ const adminCtrl = {
          });
       }
    },
+   updateProduct: async (req, res) => {
+      const product = await ProductRepo.findOne({
+         _id: getId(req.body.productId),
+      });
+
+      if (!product) {
+         res.status(400).json({ message: 'Failed to update product' });
+         return;
+      }
+      const count = await ProductRepo.countDocuments({
+         productPermalink: req.body.productPermalink,
+         _id: { $ne: getId(product._id) },
+      });
+      if (count > 0 && req.body.productPermalink !== '') {
+         res.status(400).json({
+            message: 'Permalink already exists. Pick a new one.',
+         });
+         return;
+      }
+
+      const images = await getImages(req.body.productId, req, res);
+      const productDoc = {
+         productId: req.body.productId,
+         productPermalink: req.body.productPermalink,
+         productTitle: cleanHtml(req.body.productTitle),
+         productPrice: req.body.productPrice,
+         productDescription: cleanHtml(req.body.productDescription),
+         productGtin: cleanHtml(req.body.productGtin),
+         productBrand: cleanHtml(req.body.productBrand),
+         productPublished: convertBool(req.body.productPublished),
+         productTags: req.body.productTags,
+         productComment: checkboxBool(req.body.productComment),
+         productStock: safeParseInt(req.body.productStock) || null,
+         productStockDisable: convertBool(req.body.productStockDisable),
+         productCondition: cleanHtml(req.body.productCondition),
+         productAlgorithm: cleanHtml(req.body.productAlgorithm),
+         productWeight: safeParseInt(req.body.productWeight),
+         productElectricityUsage: safeParseInt(
+            req.body.productElectricityUsage
+         ),
+         productHashrate: cleanHtml(req.body.productHashrate),
+      };
+
+      // Validate the body again schema
+      const schemaValidate = validateJson('editProduct', productDoc);
+      if (!schemaValidate.result) {
+         res.status(400).json(schemaValidate.errors);
+         return;
+      }
+
+      // Remove productId from doc
+      delete productDoc.productId;
+
+      // if no featured image
+      if (!product.productImage) {
+         if (images.length > 0) {
+            productDoc.productImage = images[0].path;
+         } else {
+            productDoc.productImage = '/uploads/placeholder.png';
+         }
+      } else {
+         productDoc.productImage = product.productImage;
+      }
+
+      try {
+         await ProductRepo.updateOne({
+            query: { _id: getId(req.body.productId) },
+            set: productDoc,
+         });
+         // Update the index
+         indexProducts(req.app).then(() => {
+            res.status(200).json({
+               message: 'Successfully saved',
+               product: productDoc,
+            });
+         });
+      } catch (ex) {
+         res.status(400).json({
+            message: 'Failed to save. Please try again',
+         });
+      }
+   },
    addVariant: async (req, res) => {
       try {
          const variantDoc = {
@@ -252,88 +334,7 @@ const adminCtrl = {
          });
       }
    },
-   updateProduct: async (req, res) => {
-      const product = await ProductRepo.findOne({
-         _id: getId(req.body.productId),
-      });
 
-      if (!product) {
-         res.status(400).json({ message: 'Failed to update product' });
-         return;
-      }
-      const count = await ProductRepo.countDocuments({
-         productPermalink: req.body.productPermalink,
-         _id: { $ne: getId(product._id) },
-      });
-      if (count > 0 && req.body.productPermalink !== '') {
-         res.status(400).json({
-            message: 'Permalink already exists. Pick a new one.',
-         });
-         return;
-      }
-
-      const images = await getImages(req.body.productId, req, res);
-      const productDoc = {
-         productId: req.body.productId,
-         productPermalink: req.body.productPermalink,
-         productTitle: cleanHtml(req.body.productTitle),
-         productPrice: req.body.productPrice,
-         productDescription: cleanHtml(req.body.productDescription),
-         productGtin: cleanHtml(req.body.productGtin),
-         productBrand: cleanHtml(req.body.productBrand),
-         productPublished: convertBool(req.body.productPublished),
-         productTags: req.body.productTags,
-         productComment: checkboxBool(req.body.productComment),
-         productStock: safeParseInt(req.body.productStock) || null,
-         productStockDisable: convertBool(req.body.productStockDisable),
-         productCondition: cleanHtml(req.body.productCondition),
-         productAlgorithm: cleanHtml(req.body.productAlgorithm),
-         productWeight: safeParseInt(req.body.productWeight),
-         productElectricityUsage: safeParseInt(
-            req.body.productElectricityUsage
-         ),
-         productHashrate: cleanHtml(req.body.productHashrate),
-      };
-
-      // Validate the body again schema
-      const schemaValidate = validateJson('editProduct', productDoc);
-      if (!schemaValidate.result) {
-         res.status(400).json(schemaValidate.errors);
-         return;
-      }
-
-      // Remove productId from doc
-      delete productDoc.productId;
-
-      // if no featured image
-      if (!product.productImage) {
-         if (images.length > 0) {
-            productDoc.productImage = images[0].path;
-         } else {
-            productDoc.productImage = '/uploads/placeholder.png';
-         }
-      } else {
-         productDoc.productImage = product.productImage;
-      }
-
-      try {
-         await ProductRepo.updateOne({
-            query: { _id: getId(req.body.productId) },
-            set: productDoc,
-         });
-         // Update the index
-         indexProducts(req.app).then(() => {
-            res.status(200).json({
-               message: 'Successfully saved',
-               product: productDoc,
-            });
-         });
-      } catch (ex) {
-         res.status(400).json({
-            message: 'Failed to save. Please try again',
-         });
-      }
-   },
    deleteProduct: async (req, res) => {
       // remove the product
       await ProductRepo.delete(getId(req.body.productId));

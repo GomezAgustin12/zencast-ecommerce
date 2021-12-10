@@ -1,0 +1,29 @@
+{{> partials/menu}}
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <form class="form-horizontal" id="bankingAccountData" data-toggle="validator">
+        <div class="col-12">
+            <div class="float-right">
+                    <button id="frm_edit_product_save" class="btn btn-outline-success" type="submit">Update wire account</button>
+                </div>
+            <div class="page-header">
+                <h2>{{ @root.__ "Banking Account Data" }}</h2>
+            </div>
+        </div>         
+        <div class="col-12">
+            <div class="form-group" id="editor-wrapper">
+                <label for="editor" class="control-label">{{ @root.__ "Wire Account" }} *</label>
+                <textarea minlength="5" rows="10" id="banking-account-data" class="form-control" required>{{wireAccount}}</textarea>
+            </div>
+        </div>
+    </form>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+<script>
+    $(document).ready(function() {
+        $('#banking-account-data').summernote({
+            height: 300,
+            minHeight: null
+        });
+    });
+</script>

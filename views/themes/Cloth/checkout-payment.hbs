@@ -51,8 +51,9 @@
                     </div>
                     {{/if}}
                     <div id="payment-form" class="payment-form">
+                    <input type='hidden' id='wireAccountInput' value='{{wireAccount}}' />
                     {{#if session.customerPresent}}
-                        <ul class="list-group bottom-pad-15">
+                        <ul class="list-group">
                             {{#each config.paymentGateway}}
                             <li class="list-group-item">
                                 <div class="row">
@@ -63,6 +64,9 @@
                             </li>
                             {{/each}}
                         </ul>
+                        <div class="col-md-12 list-group-item border-top-0">
+                            {{> partials/payments/transfer}} 
+                        </div>
                     {{/if}}
                     </div>
                 </div>
@@ -70,6 +74,6 @@
         </div>
         <div id="cart" class="col-md-7">
             {{> (getTheme 'cart')}}
-        </div>
+        </div> 
     </div>
 </div>

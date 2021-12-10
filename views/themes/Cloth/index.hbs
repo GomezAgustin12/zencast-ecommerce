@@ -15,13 +15,20 @@
     {{/if}}
     <div class="container">
         <div class="row justify-content-end">
+
         
             <div class="row">
                 <b class="mr-2 my-auto">Ordenar por</b>
-                <select class="custom-select-sm border-none" id="order_select">
-                    <option value="asc">Menor precio</option>
-                    <option value="des">Mayor precio</option>
-                </select></div>
+                <select class="custom-select-sm border-none" value="{{sortOrder}}" id="order_select">
+                    {{#ifCond sortOrder '==' 'asc'}}
+                    <option selected='selected' value="asc">Menor precio</option>
+                    <option  value="des">Mayor precio</option>
+                    {{else}}
+                    <option  value="asc">Menor precio</option>
+                    <option selected='selected' value="des">Mayor precio</option>
+                    {{/ifCond}}
+
+                </select>
      
         </div>
     </div> 

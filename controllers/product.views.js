@@ -208,6 +208,7 @@ const productViews = {
                results: results.data,
                filters: filters,
                filtered: true,
+               sortOrder,
                session: req.session,
                metaDescription: `${req.app.config.cartTitle} - Search term: ${searchTerm}`,
                searchTerm: searchTerm,

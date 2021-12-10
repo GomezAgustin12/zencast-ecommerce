@@ -98,7 +98,7 @@
             <g:id>619aacb24224dd3a41f90395</g:id>
             <g:link>http://localhost:1111/product/item-1</g:link>
             <g:description>&lt;p&gt;adsa dasdasdasd asdasdas dasd asdasd sadsadas&lt;/p&gt;</g:description>
-            <g:price>100.00 USD</g:price>
+            <g:price>200.00 USD</g:price>
             <g:image_link>http://localhost:1111//uploads/placeholder.png</g:image_link>
             <g:availability>in stock</g:availability>
             <g:gtin>12</g:gtin>
@@ -106,9 +106,9 @@
         <item>
             <g:title>Item 3</g:title>
             <g:id>619aacfc4224dd3a41f90396</g:id>
-            <g:link>http://localhost:1111/product/item-2</g:link>
+            <g:link>http://localhost:1111/product/item-3</g:link>
             <g:description>&lt;p&gt;dfsdfodsnifoisndofi ndfoiniof nsdoifnsdio nfois &lt;/p&gt;</g:description>
-            <g:price>200.00 USD</g:price>
+            <g:price>300.00 USD</g:price>
             <g:image_link>http://localhost:1111//uploads/placeholder.png</g:image_link>
             <g:availability>in stock</g:availability>
             <g:gtin>1</g:gtin>
@@ -150,6 +150,36 @@
             <g:price>16.00 USD</g:price>
             <g:image_link>http://localhost:1111/uploads/placeholder.png</g:image_link>
             <g:availability>in stock</g:availability>
+        </item>
+        <item>
+            <g:title>Item 6</g:title>
+            <g:id>61b212441d8d8d1f6320df6d</g:id>
+            <g:link>http://localhost:1111/product/item-6</g:link>
+            <g:description>&lt;p&gt;Some description&lt;/p&gt;</g:description>
+            <g:price>600 USD</g:price>
+            <g:image_link>http://localhost:1111/uploads/placeholder.png</g:image_link>
+            <g:availability>in stock</g:availability>
+            <g:gtin>1234</g:gtin>
+        </item>
+        <item>
+            <g:title>item 7</g:title>
+            <g:id>61b2130a1d8d8d1f6320df6e</g:id>
+            <g:link>http://localhost:1111/product/item-7</g:link>
+            <g:description>&lt;p&gt;some description&lt;/p&gt;</g:description>
+            <g:price>700 USD</g:price>
+            <g:image_link>http://localhost:1111//uploads/placeholder.png</g:image_link>
+            <g:availability>in stock</g:availability>
+            <g:gtin>123</g:gtin>
+        </item>
+        <item>
+            <g:title>item 9</g:title>
+            <g:id>61b369537318bd41d9d93c50</g:id>
+            <g:link>http://localhost:1111/product/item-9</g:link>
+            <g:description>&lt;p&gt;9&lt;/p&gt;</g:description>
+            <g:price>900.5 USD</g:price>
+            <g:image_link>http://localhost:1111//uploads/placeholder.png</g:image_link>
+            <g:availability>in stock</g:availability>
+            <g:gtin>9</g:gtin>
         </item>
     </channel>
 </rss>

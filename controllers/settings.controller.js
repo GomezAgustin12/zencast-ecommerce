@@ -11,6 +11,7 @@ const {
    fileSizeLimit,
    checkDirectorySync,
    sendEmail,
+   cleanHtml,
 } = require('../lib/common');
 const { getConfig, updateConfig } = require('../lib/config');
 const { newMenu, updateMenu, deleteMenu, orderMenu } = require('../lib/menu');
@@ -22,9 +23,11 @@ const {
    DiscountRepo,
    CustomersRepo,
    OrdersRepo,
+   WireAccount,
 } = require('../repositories');
 const emailRegex = /\S+@\S+\.\S+/;
 const numericRegex = /^\d*\.?\d*$/;
+const colors = require('colors');
 
 const settingsCtrl = {
    apiKey: async (req, res) => {
@@ -148,6 +151,43 @@ const settingsCtrl = {
          return;
       }
       res.status(200).json({ message: 'Menu deleted successfully.' });
+   },
+
+   bankDetails: async (req, res) => {
+      try {
+         const data = {
+            bankingAccountData: cleanHtml(req.body.bankingAccountData),
+         };
+
+         // Validate the body against schema
+         // await WireAccount.validateSchema('newProduct', doc);
+
+         //Check if it exists
+         const check = await WireAccount.findOne();
+
+         if (check) {
+            await WireAccount.updateOne({
+               query: { _id: check._id },
+               set: data,
+            });
+         } else {
+            await WireAccount.create(data);
+         }
+
+         // await WireAccount.create(doc);
+         res.status(200).json({
+            message: 'Successful operation',
+         });
+         return;
+      } catch (error) {
+         console.error(
+            '🔥🔥',
+            colors.red(`Error inserting document: ${error}`)
+         );
+         res.status(400).json({
+            message: `Error inserting document: ${error.message}`,
+         });
+      }
    },
 
    saveOrder: (req, res) => {

@@ -1,7 +1,7 @@
 const { clearSessionValue, getCountryList, getId } = require('../lib/common');
 const { getPaymentConfig } = require('../lib/config');
 const { updateTotalCart } = require('../lib/cart');
-const { CustomersRepo } = require('../repositories');
+const { CustomersRepo, WireAccount } = require('../repositories');
 const countryList = getCountryList();
 
 const checoutViews = {
@@ -119,6 +119,9 @@ const checoutViews = {
          paymentType = '_subscription';
       }
 
+      const wireAccount = await WireAccount.findOne();
+      console.log(wireAccount);
+
       // update total cart amount one last time before payment
       await updateTotalCart(req, res);
 
@@ -129,6 +132,7 @@ const checoutViews = {
          session: req.session,
          paymentPage: true,
          paymentType,
+         wireAccount: wireAccount.bankingAccountData,
          cartClose: true,
          cartReadOnly: true,
          page: 'checkout-information',

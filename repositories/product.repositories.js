@@ -2,12 +2,43 @@ const baseRepository = require('./baseRepository');
 const { getDb } = require('../lib/db');
 const filters = require('../config/filter.json');
 const { getConfig } = require('../lib/config');
+const Decimal128 = require('mongodb').Decimal128;
+const colors = require('colors');
 
 const db = getDb();
 const collection = db.products;
+
+const objIncludesField = (obj = {}, field) => {
+   if (Object.keys(obj).includes(field)) return true;
+   return false;
+};
+
 const productRepo = {
    ...baseRepository(collection),
-   insertOne: async (doc) => await collection.insertOne(doc),
+   insertOne: async (doc) =>
+      await collection.insertOne({
+         ...doc,
+         productPrice: Decimal128.fromString(doc.productPrice),
+      }),
+   updateOne: async ({ query = {}, set = {}, options = {} }) => {
+      try {
+         return await collection.findOneAndUpdate(
+            query,
+            {
+               $set: objIncludesField(set, 'productPrice')
+                  ? {
+                       ...set,
+                       productPrice: Decimal128.fromString(set.productPrice),
+                    }
+                  : set,
+            },
+            { multi: false, returnOriginal: false, ...options }
+         );
+      } catch (error) {
+         console.error('🔥🔥', colors.red(error));
+         throw Error(error);
+      }
+   },
    getFilters: async (query, filterTerms = {}) => {
       if (!query) {
          query = {};
@@ -77,6 +108,11 @@ const productRepo = {
          sort = { productPrice: -1 };
       }
 
+      const skipAndLimit = (arr, skip) => {
+         if (!Array.isArray(arr)) throw Error('"arr" is not an array');
+         return arr.slice(skip, skip + numberItems);
+      };
+
       try {
          // Run our queries
          const result = await Promise.all([
@@ -91,22 +127,30 @@ const productRepo = {
                         as: 'variants',
                      },
                   },
+                  {
+                     $sort: { productPrice: -1 },
+                  },
                ])
-               .sort(sort)
-               .skip(skip)
-               .limit(parseInt(numberItems))
+               // .sort(sort)
+               // .skip(skip)
+               // .limit(parseInt(numberItems))
                .toArray(),
             collection.countDocuments(query),
          ]);
          const sortField = Object.keys(sort)[0];
          const sortOrder = Object.values(sort)[0];
          let res = result[0];
-         if (sortOrder === -1) {
+         if (sortOrder === 1) {
             res = result[0].sort((a, b) => a[sortField] - b[sortField]);
          } else {
             res = result[0].sort((a, b) => b[sortField] - a[sortField]);
          }
-         const returnData = { data: res, totalItems: result[1] };
+
+         res = skipAndLimit(res, skip);
+         const returnData = {
+            data: res,
+            totalItems: result[1],
+         };
          return returnData;
       } catch (err) {
          console.log('🤪', err);

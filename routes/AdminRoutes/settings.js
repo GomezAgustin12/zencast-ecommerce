@@ -18,6 +18,20 @@ router.get('/menu', csrfProtection, restrict, settingsViews.menuSettings);
 // page list
 router.get('/pages', csrfProtection, restrict, settingsViews.pagesSettings);
 
+router.get(
+   '/banking-account-data',
+   csrfProtection,
+   restrict,
+   settingsViews.bankDetails
+);
+
+router.post(
+   '/banking-account-data',
+   restrict,
+   checkAccess,
+   settingsCtrl.bankDetails
+);
+
 // pages new
 router.get(
    '/pages/new',
