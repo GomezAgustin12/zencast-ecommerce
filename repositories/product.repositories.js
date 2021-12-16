@@ -108,7 +108,7 @@ const productRepo = {
          query = {};
       }
 
-      if (!filter || Object.keys(filter).length === 0) {
+      if (filter && Object.keys(filter).length !== 0) {
          if (Object.keys(query).length !== 0) {
             query = { $and: [{ ...query }, { ...filter }] };
          } else {

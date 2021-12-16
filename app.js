@@ -63,6 +63,7 @@ const app = express();
 Array.prototype.pipe = function (...fns) {
    return fns.reduce((y, f) => f(y), this);
 };
+
 // Language initialize
 i18n.configure({
    locales: config.availableLanguages,
