@@ -68,8 +68,14 @@
                     <textarea class="form-control" id="product_comment"></textarea>
                 </div>
                 {{/if}}
+                {{#if techFeatures}}
                 <div class="col-md-10 btnAddToCart">
+                    <a href="{{techFeatures}}" target="_blank" class="btn btn-block btn-info" type="button">{{ @root.__ "Tech Features" }}</a>
+                </div>
+                {{/if}}
+                <div class="col-md-10">
                     <button class="btn btn-primary btn-block product-add-to-cart" type="button">{{ @root.__ "Add to cart" }}</button>
+                    <button class="btn btn-block btn-success btn-buy-product" type="button">{{ @root.__ "Buy" }}</button>
                 </div>
                 <div class="col-md-10 body_text">
                     {{{fixTags result.productDescription}}}

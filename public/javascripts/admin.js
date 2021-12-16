@@ -406,13 +406,40 @@ $(document).ready(function () {
    });
 
    $('.btn-delete-image').on('click', function () {
+      const [product_id, productImage] = [
+         $('#productId').val(),
+         $(this).attr('data-id'),
+      ];
       if (confirm('Are you sure you want to delete this image?')) {
          $.ajax({
             method: 'POST',
             url: '/admin/product/deleteimage',
             data: {
-               product_id: $('#productId').val(),
-               productImage: $(this).attr('data-id'),
+               product_id,
+               productImage,
+            },
+         })
+            .done(function (msg) {
+               showNotification(msg.message, 'success', true);
+            })
+            .fail(function (msg) {
+               showNotification(msg.responseJSON.message, 'danger');
+            });
+      }
+   });
+
+   $('.btn-delete-tech-features').on('click', function () {
+      const [product_id, productTechFeature] = [
+         $('#productId').val(),
+         $(this).attr('data-id'),
+      ];
+      if (confirm('Are you sure you want to delete this image?')) {
+         $.ajax({
+            method: 'POST',
+            url: '/admin/product/deleteTechFeatures',
+            data: {
+               product_id,
+               productTechFeature,
             },
          })
             .done(function (msg) {
@@ -921,10 +948,34 @@ $(document).ready(function () {
       });
    }
 
+   $(document).on('click', '#uploadPdfButton', function (e) {
+      e.preventDefault();
+      var formData = new FormData($('#uploadPdfForm')[0]);
+      formData.append('productId', $('#productPdfId').val());
+      formData.append('type', 'techFeatures');
+
+      // Upload file
+      $.ajax({
+         method: 'POST',
+         url: '/admin/techFeatures',
+         processData: false,
+         contentType: false,
+         cache: false,
+         data: formData,
+      })
+         .done(function (msg) {
+            showNotification(msg.message, 'success', true);
+         })
+         .fail(function (msg) {
+            showNotification(msg.responseJSON.message, 'danger');
+         });
+   });
+
    $(document).on('click', '#uploadButton', function (e) {
       e.preventDefault();
       var formData = new FormData($('#uploadForm')[0]);
       formData.append('productId', $('#productId').val());
+      formData.append('type', 'productImages');
 
       // Upload file
       $.ajax({

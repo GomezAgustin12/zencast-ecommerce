@@ -259,10 +259,8 @@ const productCtrl = {
 
          // If stock management on check there is sufficient stock for this product
          if (config.trackStock) {
-            //esto esta en false en la config (settings.json)
             // Only if not disabled
             if (product.productStockDisable !== true && productStock) {
-               //no existe el campo "productStockDisable" en el modelo y nose de donde saca los datos
                // If there is more stock than total (ignoring held)
                if (productQuantity > productStock) {
                   return res.status(400).json({

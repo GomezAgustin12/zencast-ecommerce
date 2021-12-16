@@ -53,6 +53,13 @@ router.post(
    upload.single('uploadFile'),
    settingsCtrl.fileUpload
 );
+router.post(
+   '/admin/techFeatures',
+   restrict,
+   checkAccess,
+   upload.single('uploadFile'),
+   adminCtrl.updateTechFeatures
+);
 
 // validate the permalink
 router.post('/admin/validatePermalink', settingsCtrl.validatePermalink);

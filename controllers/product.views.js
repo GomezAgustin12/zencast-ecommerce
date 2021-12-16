@@ -1,4 +1,4 @@
-const { getId, clearSessionValue, getImages } = require('../lib/common');
+const { getId, clearSessionValue } = require('../lib/common');
 const { sortMenu, getMenu } = require('../lib/menu');
 const {
    CustomersRepo,
@@ -107,7 +107,7 @@ const productViews = {
       }
 
       // show the view
-      const images = await getImages(product._id, req, res);
+      const images = await ProductRepo.getFiles(product._id, 'productImages');
 
       // Related products
       let relatedProducts = {};
@@ -138,6 +138,7 @@ const productViews = {
          variants,
          reviews,
          images: images,
+         techFeatures: product.techFeatures,
          relatedProducts,
          productDescription: stripHtml(product.productDescription),
          metaDescription: `${config.cartTitle} - ${product.productTitle}`,

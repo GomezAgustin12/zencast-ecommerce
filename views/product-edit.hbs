@@ -4,6 +4,7 @@
             <div class="col-12">
                 <div class="page-header">
                     <div class="float-right">
+                        <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#uploadPdf">{{ @root.__ "Upload PDF" }}</button>
                         <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#myModal">{{ @root.__ "Upload image" }}</button>
                         <button id="productUpdate" class="btn btn-outline-success">{{ @root.__ "Save product" }}</button>
                     </div>
@@ -218,6 +219,26 @@
                     {{/if}}
                 </div>
             </div>
+            <div class="col-sm-12">
+                <div id="product-images">
+                    <h2>{{ @root.__ "Tech Features" }}</h2>
+                    {{#if techFeatures}}
+                    <div class="row">
+                        {{#each techFeatures}}
+                        <div class="col-sm-3">
+                            <p>
+                                <a data-id="{{this.path}}" class="btn-delete-tech-features btn btn-outline-danger">{{ @root.__ "Delete" }}</a>
+                                <a href="{{this.path}}" target="_blank" class="btn btn-outline-success">{{ @root.__ "Open" }}</a>                            
+                            </p>
+                            <embed  src="{{this.path}}" class="product-main-image img-fluid" type="application/pdf" width="191" height="207" name="plugin">
+                        </div>
+                        {{/each}}
+                    </div>
+                    {{else}}
+                        <h4 class="text-warning">{{ @root.__ "No images have been uploaded for this product" }}</h4>
+                    {{/if}}
+                </div>
+            </div>
         </div>
         <input type="hidden" id="productId" value="{{result._id}}" />
     </form>
@@ -234,7 +255,7 @@
             </div>
             <div class="modal-body">
                 <span class="btn btn-outline-info btn-file">
-                    {{ @root.__ "Select file" }}<input type="file" name="uploadFile" id="uploadFile" form="uploadForm">
+                    {{ @root.__ "Select image" }}<input type="file" accept="image/*" name="uploadFile" id="uploadFile" form="uploadForm">
                 </span>
                 <input type="hidden" id="productId" name="productId" value="{{result._id}}"/>
             </div>
@@ -245,6 +266,29 @@
         </div>
     </div>
 </div>
+<!-- Modal Upload PDF -->
+<div class="modal fade" id="uploadPdf" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" id="uploadPdfForm" enctype="multipart/form-data"></form>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">{{ @root.__ "Upload PDF" }}</h4>
+            </div>
+            <div class="modal-body">
+                <span class="btn btn-outline-info btn-file">
+                    {{ @root.__ "Select file" }}<input type="file" accept=".pdf" name="uploadFile" id="uploadFile" form="uploadPdfForm">
+                </span>
+                <input type="hidden" id="productPdfId" name="productId" value="{{result._id}}"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" id="uploadPdfButton" class="btn btn-outline-primary">{{ @root.__ "Upload" }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.min.js" integrity="sha256-Q4K0T9IUORjpebn9dIu9szj2Rgn7GmLF+S3RjgM8aXw=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" integrity="sha256-f/v2ew/bb0v4el1ALE7bOoXGUDWGk2k+dkPLo3JPhLw=" crossorigin="anonymous" />
 <script>

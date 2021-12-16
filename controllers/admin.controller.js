@@ -1,7 +1,5 @@
 const colors = require('colors');
 const bcrypt = require('bcryptjs');
-const fs = require('fs');
-const path = require('path');
 const { validateJson } = require('../lib/schema');
 const {
    mongoSanitize,
@@ -10,11 +8,12 @@ const {
    cleanHtml,
    convertBool,
    checkboxBool,
-   getImages,
 } = require('../lib/common');
 const { UserRepo, VariantsRepo, ProductRepo } = require('../repositories');
 const { indexProducts } = require('../lib/indexing');
 const rimraf = require('rimraf');
+const fs = require('fs');
+const path = require('path');
 
 const adminCtrl = {
    login: async (req, res) => {
@@ -151,7 +150,10 @@ const adminCtrl = {
          return;
       }
 
-      const images = await getImages(req.body.productId, req, res);
+      const images = await ProductRepo.getFiles(
+         req.body.productId,
+         'productImages'
+      );
       const productDoc = {
          productId: req.body.productId,
          productPermalink: req.body.productPermalink,
@@ -386,46 +388,79 @@ const adminCtrl = {
       }
    },
    deleteImage: async (req, res) => {
-      // get the productImage from the db
-      const product = await ProductRepo.findOne({
-         _id: getId(req.body.product_id),
-      });
-      if (!product) {
-         res.status(400).json({ message: 'Product not found' });
-         return;
+      try {
+         const { filePath, product } = await ProductRepo.deleteFile(
+            req.body.product_id,
+            req.body.productImage
+         );
+
+         if (filePath === product.productImage) {
+            // set the productImage to null
+            await ProductRepo.updateOne({
+               query: { _id: getId(req.body.product_id) },
+               set: { productImage: null },
+            });
+         }
+
+         res.status(200).json({
+            message: 'Image successfully deleted',
+         });
+      } catch (error) {
+         res.status(400).json({ message: error.message });
       }
-      if (req.body.productImage === product.productImage) {
+   },
+   deleteTechFeatures: async (req, res) => {
+      try {
+         await ProductRepo.deleteFile(
+            req.body.product_id,
+            req.body.productTechFeature
+         );
+
          // set the productImage to null
          await ProductRepo.updateOne({
             query: { _id: getId(req.body.product_id) },
-            set: { productImage: null },
+            set: { techFeatures: null },
          });
 
-         // remove the image from disk
-         fs.unlink(path.join('public', req.body.productImage), (err) => {
-            if (err) {
-               res.status(400).json({
-                  message: 'Image not removed, please try again.',
-               });
-            } else {
-               res.status(200).json({
-                  message: 'Image successfully deleted',
-               });
-            }
+         res.status(200).json({
+            message: 'Image successfully deleted',
          });
-      } else {
-         // remove the image from disk
-         fs.unlink(path.join('public', req.body.productImage), (err) => {
-            if (err) {
-               res.status(400).json({
-                  message: 'Image not removed, please try again.',
-               });
-            } else {
-               res.status(200).json({
-                  message: 'Image successfully deleted',
-               });
-            }
+      } catch (error) {
+         res.status(400).json({ message: error.message });
+      }
+   },
+   updateTechFeatures: async (req, res) => {
+      try {
+         const productId = req.body.productId;
+
+         // get the product from the db
+         const product = await ProductRepo.findOne({
+            _id: getId(productId),
          });
+         if (!product) throw Error('Product not found');
+
+         if (product.techFeatures) {
+            // remove the image from disk
+            fs.unlink(path.join('public', product.techFeatures), (err) => {
+               console.warn(err);
+            });
+         }
+
+         const { filePath } = await ProductRepo.fileUpload(
+            req.body.productId,
+            req.file,
+            req.body.type
+         );
+
+         // set techFeatures to the new path
+         await ProductRepo.updateOne({
+            query: { _id: getId(productId) },
+            set: { techFeatures: filePath },
+         });
+
+         res.status(200).json({ message: 'File succesfully Updated' });
+      } catch (error) {
+         res.status(400).json({ message: error.message });
       }
    },
 };

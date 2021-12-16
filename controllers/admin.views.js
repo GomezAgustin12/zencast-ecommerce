@@ -1,7 +1,4 @@
 const { clearSessionValue, getThemes, getId } = require('../lib/common');
-
-const { getImages } = require('../lib/common');
-
 const {
    UserRepo,
    ProductRepo,
@@ -175,7 +172,12 @@ const adminViews = {
       });
    },
    editProduct: async (req, res) => {
-      const images = await getImages(req.params.id, req, res);
+      const images = await ProductRepo.getFiles(req.params.id, 'productImages');
+      const techFeatures = await ProductRepo.getFiles(
+         req.params.id,
+         'techFeatures'
+      );
+
       const product = await ProductRepo.findOne({
          _id: getId(req.params.id),
       });
@@ -206,6 +208,7 @@ const adminViews = {
          title: 'Edit product',
          result: product,
          images: images,
+         techFeatures: techFeatures,
          admin: true,
          session: req.session,
          message: clearSessionValue(req.session, 'message'),

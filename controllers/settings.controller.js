@@ -1,18 +1,6 @@
 const moment = require('moment');
-const fs = require('fs');
-const path = require('path');
-const mime = require('mime-type/with-db');
-const util = require('util');
-const stream = require('stream');
 const { validateJson } = require('../lib/schema');
-const {
-   getId,
-   allowedMimeType,
-   fileSizeLimit,
-   checkDirectorySync,
-   sendEmail,
-   cleanHtml,
-} = require('../lib/common');
+const { getId, sendEmail, cleanHtml } = require('../lib/common');
 const { getConfig, updateConfig } = require('../lib/config');
 const { newMenu, updateMenu, deleteMenu, orderMenu } = require('../lib/menu');
 const ObjectId = require('mongodb').ObjectID;
@@ -332,81 +320,24 @@ const settingsCtrl = {
    },
 
    fileUpload: async (req, res) => {
-      if (req.file) {
-         const file = req.file;
-
-         // Get the mime type of the file
-         const mimeType = mime.lookup(file.originalname);
-
-         // Check for allowed mime type and file size
-         if (!allowedMimeType.includes(mimeType) || file.size > fileSizeLimit) {
-            // Remove temp file
-            fs.unlinkSync(file.path);
-
-            // Return error
-            res.status(400).json({
-               message: 'File type not allowed or too large. Please try again.',
-            });
-            return;
-         }
-
-         // get the product form the DB
-         const product = await ProductRepo.findOne({
-            _id: getId(req.body.productId),
-         });
-         if (!product) {
-            // delete the temp file.
-            fs.unlinkSync(file.path);
-
-            // Return error
-            res.status(400).json({
-               message: 'File upload error. Please try again.',
-            });
-            return;
-         }
-
-         const productPath = product._id.toString();
-         const uploadDir = path.join('public/uploads', productPath);
-
-         // Check directory and create (if needed)
-         checkDirectorySync(uploadDir);
-
-         // Setup the new path
-         const imagePath = path.join(
-            '/uploads',
-            productPath,
-            file.originalname.replace(/ /g, '_')
+      try {
+         const { filePath, product } = await ProductRepo.fileUpload(
+            req.body.productId,
+            req.file,
+            req.body.type
          );
 
-         // save the new file
-         const dest = fs.createWriteStream(
-            path.join(uploadDir, file.originalname.replace(/ /g, '_'))
-         );
-         const pipeline = util.promisify(stream.pipeline);
-
-         try {
-            await pipeline(fs.createReadStream(file.path), dest);
-
-            // delete the temp file.
-            fs.unlinkSync(file.path);
-
-            // if there isn't a product featured image, set this one
-            if (!product.productImage) {
-               await ProductRepo.updateOne({
-                  query: { _id: getId(req.body.productId) },
-                  set: { productImage: imagePath },
-               });
-            }
-            res.status(200).json({ message: 'File uploaded successfully' });
-         } catch (ex) {
-            console.log('Failed to upload the file', ex);
-            res.status(400).json({
-               message: 'File upload error. Please try again.',
+         // if there isn't a product featured image, set this one
+         if (!product.productImage) {
+            await ProductRepo.updateOne({
+               query: { _id: getId(req.body.productId) },
+               set: { productImage: filePath },
             });
          }
-      } else {
-         // Return error
-         console.log('fail', req.file);
+
+         res.status(200).json({ message: 'File uploaded successfully' });
+      } catch (error) {
+         console.log('Failed to upload the file', error);
          res.status(400).json({
             message: 'File upload error. Please try again.',
          });

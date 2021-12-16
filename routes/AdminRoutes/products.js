@@ -39,6 +39,13 @@ router.post('/setasmainimage', restrict, checkAccess, adminCtrl.setasmainimage);
 // deletes a product image
 router.post('/deleteimage', restrict, checkAccess, adminCtrl.deleteImage);
 
+router.post(
+   '/deleteTechFeatures',
+   restrict,
+   checkAccess,
+   adminCtrl.deleteTechFeatures
+);
+
 router.get('/:page?', restrict, adminViews.page);
 
 module.exports = router;

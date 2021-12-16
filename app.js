@@ -59,6 +59,10 @@ _.forEach(config.paymentGateway, (gateway) => {
 
 const app = express();
 
+// eslint-disable-next-line no-extend-native
+Array.prototype.pipe = function (...fns) {
+   return fns.reduce((y, f) => f(y), this);
+};
 // Language initialize
 i18n.configure({
    locales: config.availableLanguages,

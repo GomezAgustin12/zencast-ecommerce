@@ -507,6 +507,43 @@ $(document).ready(function () {
          });
    });
 
+   $(document).on('click', '.btn-buy-product', function (e) {
+      $.ajax({
+         method: 'GET',
+         url: '/checkout/cartData',
+      }).done(function (result) {
+         if (result.cart) {
+            $('#buyConfirmModal').modal('show');
+            $('#buttonConfirmBuy').attr('data-func', 'buyAction');
+         } else {
+            $.ajax({
+               method: 'POST',
+               url: '/product/addtocart',
+               data: {
+                  productId: $('#productId').val(),
+                  productQuantity: $('#product_quantity').val(),
+                  productVariant: $('#product_variant').val(),
+                  productComment: $('#product_comment').val(),
+               },
+            })
+               .done(function (msg) {
+                  window.location.replace(
+                     'http://localhost:1111/checkout/information'
+                  );
+               })
+               .fail(function (msg) {
+                  showNotification(msg.responseJSON.message, 'danger');
+               });
+         }
+      });
+   });
+
+   $(document).on('click', '#buttonConfirmBuy', function (e) {
+      // Get the function and run it
+      var func = $(e.target).attr('data-func');
+      window[func]();
+   });
+
    $('#product_quantity').on('keyup', function (e) {
       checkMaxQuantity(e, $('#product_quantity'));
    });
@@ -958,6 +995,33 @@ function emptyCart() {
    }).done(function (msg) {
       updateCartDiv();
       showNotification(msg.message, 'success', true);
+   });
+}
+
+function buyAction() {
+   $.ajax({
+      method: 'POST',
+      url: '/product/emptycart',
+   }).done(function (msg) {
+      updateCartDiv();
+      $.ajax({
+         method: 'POST',
+         url: '/product/addtocart',
+         data: {
+            productId: $('#productId').val(),
+            productQuantity: $('#product_quantity').val(),
+            productVariant: $('#product_variant').val(),
+            productComment: $('#product_comment').val(),
+         },
+      })
+         .done(function (msg) {
+            window.location.replace(
+               'http://localhost:1111/checkout/information'
+            );
+         })
+         .fail(function (msg) {
+            showNotification(msg.responseJSON.message, 'danger');
+         });
    });
 }
 
