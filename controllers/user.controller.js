@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 const { getId } = require('../lib/common');
 
 const { UserRepo } = require('../repositories');
-const { validateJson } = require('../lib/schema');
 
 const userCtrl = {
    delete: async (req, res) => {
@@ -85,15 +84,7 @@ const userCtrl = {
       }
 
       // Validate update user
-      // UserRepo.validateSchema('editUser', customerObj);  Mirar si esto va
-      const schemaResult = validateJson('editUser', updateDoc);
-      if (!schemaResult.result) {
-         res.status(400).json({
-            message: 'Failed to create user. Check inputs.',
-            error: schemaResult.errors,
-         });
-         return;
-      }
+      UserRepo.validateSchema('editUser', updateDoc);
 
       try {
          const updatedUser = await UserRepo.updateOne({
@@ -132,14 +123,7 @@ const userCtrl = {
       };
 
       // Validate new user
-      const schemaResult = validateJson('newUser', userObj);
-      if (!schemaResult.result) {
-         res.status(400).json({
-            message: 'Failed to create user. Check inputs.',
-            error: schemaResult.errors,
-         });
-         return;
-      }
+      UserRepo.validateSchema('newUser', userObj);
 
       // check for existing user
       const user = await UserRepo.findOne({ userEmail: req.body.userEmail });

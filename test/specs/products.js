@@ -104,7 +104,7 @@ test('[Fail] Add a product with incorrect GTIN', async (t) => {
    // Check the returned message
    t.deepEqual(
       res.body.message,
-      'Error inserting document: /productGtin should match format "alphanumeric"'
+      'Error inserting document: /productGtin: should match format "alphanumeric"'
    );
 });
 

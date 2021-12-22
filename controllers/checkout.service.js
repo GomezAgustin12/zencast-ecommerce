@@ -1,5 +1,8 @@
 const moment = require('moment');
-const { updateTotalCart } = require('../lib/cart');
+const { updateTotalCart, emptyCart } = require('../lib/cart');
+const { getId } = require('../lib/common');
+const { indexOrders } = require('../lib/indexing');
+const { OrdersRepo } = require('../repositories');
 const discountsRepo = require('../repositories/discounts.repositories');
 
 const checkoutService = {
@@ -69,6 +72,55 @@ const checkoutService = {
          session: req.session,
          currencySymbol: config.currencySymbol || '$',
       };
+   },
+   confirmWireTransfer: (req, res) => {
+      // new order doc
+      const orderDoc = {
+         orderPaymentId: null,
+         orderPaymentGateway: 'Wire Transfer',
+         orderTotal: req.session.totalCartAmount,
+         orderShipping: req.session.totalCartShipping,
+         orderItemCount: req.session.totalCartItems,
+         orderProductCount: req.session.totalCartProducts,
+         orderCustomer: getId(req.session.customerId),
+         orderEmail: req.session.customerEmail,
+         orderCompany: req.session.customerCompany,
+         orderFirstname: req.session.customerFirstname,
+         orderLastname: req.session.customerLastname,
+         orderAddr1: req.session.customerAddress1,
+         orderAddr2: req.session.customerAddress2,
+         orderCountry: req.session.customerCountry,
+         orderState: req.session.customerState,
+         orderPostcode: req.session.customerPostcode,
+         orderPhoneNumber: req.session.customerPhone,
+         orderComment: req.session.orderComment,
+         orderTrackingNumber: null,
+         trackingCompany: null,
+         trackingURL: null,
+         orderStatus: 'Pending',
+         orderDate: new Date(),
+         orderProducts: req.session.cart,
+         orderType: 'Single',
+      };
+
+      // insert order into DB
+      OrdersRepo.create(orderDoc, (err, newDoc) => {
+         if (err) {
+            console.info(err.stack);
+         }
+
+         // get the new ID
+         const newId = newDoc.insertedId;
+         console.log(newId);
+
+         // add to lunr index
+         indexOrders(req.app).then(() => {
+            // clear the cart
+            if (req.session.cart) {
+               emptyCart(req, res, 'function');
+            }
+         });
+      });
    },
 };
 module.exports = checkoutService;

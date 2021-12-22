@@ -1,5 +1,4 @@
 const moment = require('moment');
-const { validateJson } = require('../lib/schema');
 const { getId, sendEmail, cleanHtml } = require('../lib/common');
 const { getConfig, updateConfig } = require('../lib/config');
 const { newMenu, updateMenu, deleteMenu, orderMenu } = require('../lib/menu');
@@ -221,11 +220,7 @@ const settingsCtrl = {
       };
 
       // Validate the body again schema
-      const schemaValidate = validateJson('editDiscount', discountDoc);
-      if (!schemaValidate.result) {
-         res.status(400).json(schemaValidate.errors);
-         return;
-      }
+      DiscountRepo.validateSchema('editDiscount', discountDoc);
 
       // Check end is after the start
       if (!moment(discountDoc.end).isAfter(moment(discountDoc.start))) {
@@ -265,44 +260,44 @@ const settingsCtrl = {
 
    createDiscount: async (req, res) => {
       // Doc to insert
-      const discountDoc = {
-         code: req.body.code,
-         type: req.body.type,
-         value: parseInt(req.body.value),
-         start: moment(req.body.start, 'DD/MM/YYYY HH:mm').toDate(),
-         end: moment(req.body.end, 'DD/MM/YYYY HH:mm').toDate(),
-      };
+      try {
+         const discountDoc = {
+            code: req.body.code,
+            type: req.body.type,
+            value: parseInt(req.body.value),
+            start: moment(req.body.start, 'DD/MM/YYYY HH:mm').toDate(),
+            end: moment(req.body.end, 'DD/MM/YYYY HH:mm').toDate(),
+         };
 
-      // Validate the body again schema
-      const schemaValidate = validateJson('newDiscount', discountDoc);
-      if (!schemaValidate.result) {
-         res.status(400).json(schemaValidate.errors);
-         return;
-      }
+         // Validate the body again schema
+         DiscountRepo.validateSchema('newDiscount', discountDoc);
 
-      // Check if code exists
-      const checkCode = await DiscountRepo.countDocuments({
-         code: discountDoc.code,
-      });
-      if (checkCode) {
-         res.status(400).json({ message: 'Discount code already exists' });
-         return;
-      }
-
-      // Check end is after the start
-      if (!moment(discountDoc.end).isAfter(moment(discountDoc.start))) {
-         res.status(400).json({
-            message: 'Discount end date needs to be after start date',
+         // Check if code exists
+         const checkCode = await DiscountRepo.countDocuments({
+            code: discountDoc.code,
          });
-         return;
-      }
+         if (checkCode) {
+            res.status(400).json({ message: 'Discount code already exists' });
+            return;
+         }
 
-      // Insert discount code
-      const discount = await DiscountRepo.create(discountDoc);
-      res.status(200).json({
-         message: 'Discount code created successfully',
-         discountId: discount.insertedId,
-      });
+         // Check end is after the start
+         if (!moment(discountDoc.end).isAfter(moment(discountDoc.start))) {
+            res.status(400).json({
+               message: 'Discount end date needs to be after start date',
+            });
+            return;
+         }
+
+         // Insert discount code
+         const discount = await DiscountRepo.create(discountDoc);
+         res.status(200).json({
+            message: 'Discount code created successfully',
+            discountId: discount.insertedId,
+         });
+      } catch (error) {
+         res.status(400).json({ message: error.message });
+      }
    },
 
    deleteDiscount: async (req, res) => {
@@ -312,7 +307,7 @@ const settingsCtrl = {
             message: 'Discount code successfully deleted',
          });
          return;
-      } catch (ex) {
+      } catch (error) {
          res.status(400).json({
             message: 'Error deleting discount code. Please try again.',
          });

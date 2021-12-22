@@ -31,6 +31,17 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
+                        <label for="productPrice" class="control-label">{{ @root.__ "Product price in euro" }}</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text">{{currencySymbol config.currencySymbols.euro}}</label>
+                            </div>
+                            <input type="number" id="productPrice" class="form-control" value="{{result.productPriceEuro}}" step="any" required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
                         <label for="productPublished" class="control-label">{{ @root.__ "Status" }} *</label>
                         <select class="form-control" id="productPublished">
                             <option value="true"  {{selectState result.productPublished "true"}}>{{ @root.__ "Published" }}</option>

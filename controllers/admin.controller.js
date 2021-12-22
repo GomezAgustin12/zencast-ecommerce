@@ -1,6 +1,5 @@
 const colors = require('colors');
 const bcrypt = require('bcryptjs');
-const { validateJson } = require('../lib/schema');
 const {
    mongoSanitize,
    getId,
@@ -77,6 +76,7 @@ const adminCtrl = {
             productPermalink: req.body.productPermalink,
             productTitle: cleanHtml(req.body.productTitle),
             productPrice: req.body.productPrice,
+            productPriceEuro: req.body.productPriceEuro,
             productDescription: cleanHtml(req.body.productDescription),
             productGtin: cleanHtml(req.body.productGtin),
             productBrand: cleanHtml(req.body.productBrand),
@@ -176,12 +176,7 @@ const adminCtrl = {
          productHashrate: cleanHtml(req.body.productHashrate),
       };
 
-      // Validate the body again schema
-      const schemaValidate = validateJson('editProduct', productDoc);
-      if (!schemaValidate.result) {
-         res.status(400).json(schemaValidate.errors);
-         return;
-      }
+      ProductRepo.validateSchema('editProduct', productDoc);
 
       // Remove productId from doc
       delete productDoc.productId;
@@ -224,15 +219,8 @@ const adminCtrl = {
             stock: safeParseInt(req.body.stock) || null,
          };
 
-         // Validate the body again schema
-         const schemaValidate = validateJson('newVariant', variantDoc);
-         if (!schemaValidate.result) {
-            if (process.env.NODE_ENV !== 'test') {
-               console.log('schemaValidate errors', schemaValidate.errors);
-            }
-            res.status(400).json(schemaValidate.errors);
-            return;
-         }
+         // Validate the body against schema
+         ProductRepo.validateSchema('newVariant', variantDoc);
 
          // Check product exists
          const product = await ProductRepo.findOne({
@@ -253,9 +241,7 @@ const adminCtrl = {
          });
       } catch (error) {
          console.error('🔥🔥', colors.red(error));
-         res.status(400).json({
-            message: 'Failed to add variant. Please try again',
-         });
+         res.status(400).json({ message: error.message });
       }
    },
    editVariant: async (req, res) => {
@@ -268,14 +254,7 @@ const adminCtrl = {
       };
 
       // Validate the body again schema
-      const schemaValidate = validateJson('editVariant', variantDoc);
-      if (!schemaValidate.result) {
-         if (process.env.NODE_ENV !== 'test') {
-            console.log('schemaValidate errors', schemaValidate.errors);
-         }
-         res.status(400).json(schemaValidate.errors);
-         return;
-      }
+      ProductRepo.validateSchema('editVariant', variantDoc);
 
       // Validate ID's
       const product = await ProductRepo.findOne({

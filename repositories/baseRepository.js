@@ -8,7 +8,7 @@ const baseRepository = (collection) => ({
       if (!schemaValidate.result) {
          console.log('schemaValidate errors', schemaValidate.errors);
          throw Error(
-            `${schemaValidate.errors[0].dataPath} ${schemaValidate.errors[0].message}`
+            `${schemaValidate.errors[0].dataPath}: ${schemaValidate.errors[0].message}`
          );
       }
    },

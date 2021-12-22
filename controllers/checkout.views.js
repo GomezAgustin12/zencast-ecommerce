@@ -120,7 +120,6 @@ const checoutViews = {
       }
 
       const wireAccount = await WireAccount.findOne();
-      console.log(wireAccount);
 
       // update total cart amount one last time before payment
       await updateTotalCart(req, res);

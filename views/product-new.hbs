@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="row ml-0 mr-0">
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <div class="form-group">
                     <label for="productPrice" class="control-label">{{ @root.__ "Product price" }} *</label>
                     <div class="input-group">
@@ -25,6 +25,18 @@
                         </div>
                         <input type="number" id="productPrice" class="form-control" step="any" value="{{productPrice}}" required/>
                     </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label for="productPriceEuro" class="control-label">{{ @root.__ "Product price in euros" }}</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text">{{currencySymbol config.currencySymbols.euro}}</label>
+                        </div>
+                        <input type="number" id="productPriceEuro" class="form-control" step="any"/>
+                    </div>
+                    <p class="help-block">{{ @root.__ "For display purpose" }}</p>
                 </div>
             </div>
             <div class="col-sm-3">
@@ -45,7 +57,7 @@
                     <p class="help-block">{{ @root.__ "The brand of the product" }}</p>
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <div class="form-group">
                     <label for="productCondition" class="control-label">{{ @root.__ "Condition" }}</label>
                     <select class="form-control" id="productCondition">

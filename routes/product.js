@@ -35,6 +35,7 @@ router.get(
    '/product/page/:pageNum/filterTerms/:filterTerms',
    productViews.show
 );
+router.get('/product/page/:pageNum/searchTerm/:searchTerm', productViews.show);
 router.get('/product/filterTerms/:filterTerms', productViews.show);
 router.get('/product/searchTerm/:searchTerm', productViews.show);
 router.get('/product/sortOrder/:sortOrder', productViews.show);

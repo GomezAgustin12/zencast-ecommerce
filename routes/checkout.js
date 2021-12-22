@@ -45,4 +45,16 @@ router.post('/checkout/removediscountcode', async (req, res) => {
    }
 });
 
+router.post('/checkout/confirmwiretransfer', async (req, res) => {
+   try {
+      await checkoutService.confirmWireTransfer(req, res);
+      res.status(200).json({ message: 'Order created' });
+   } catch (error) {
+      console.error('🔥🔥', colors.red(`${error}`));
+      res.status(400).json({
+         message: `${error.message}`,
+      });
+   }
+});
+
 module.exports = router;

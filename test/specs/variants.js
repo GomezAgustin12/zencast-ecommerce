@@ -69,10 +69,12 @@ test('[Fail] Add a variant with invalid price', async (t) => {
       .set('apiKey', g.users[0].apiKey)
       .expect(400);
 
+   console.log('🤪', res.body.message);
+
    // Check the returned message
    t.deepEqual(
-      res.body[0].message,
-      'Should be a full 2 decimal value. Eg: 10.99'
+      res.body.message,
+      '/price: Should be a full 2 decimal value. Eg: 10.99'
    );
 });
 
@@ -91,7 +93,7 @@ test('[Fail] Add a variant to an invalid product', async (t) => {
       .expect(400);
 
    // Check the returned message
-   t.deepEqual(res.body[0].message, 'should match format "objectid"');
+   t.deepEqual(res.body.message, '/product: should match format "objectid"');
 });
 
 test('[Success] Update existing variant', async (t) => {

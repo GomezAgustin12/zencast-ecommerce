@@ -171,8 +171,8 @@ test('[Fail] Create a new discount code with invalid type', async (t) => {
       .expect(400);
 
    t.deepEqual(
-      res.body[0].message,
-      'should be equal to one of the allowed values'
+      res.body.message,
+      '/type: should be equal to one of the allowed values'
    );
 });
 

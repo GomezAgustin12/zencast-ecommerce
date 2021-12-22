@@ -55,7 +55,7 @@ test('[Fail] Validate schema, given a not valid schema', async (t) => {
    } catch (error) {
       t.deepEqual(
          error.message,
-         '/productGtin should match format "alphanumeric"'
+         '/productGtin: should match format "alphanumeric"'
       );
    }
 });

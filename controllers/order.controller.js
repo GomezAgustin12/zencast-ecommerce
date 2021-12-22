@@ -8,7 +8,6 @@ const { emptyCart } = require('../lib/cart');
 const { indexOrders } = require('../lib/indexing');
 const OrdersRepo = require('../repositories/orders.repositories');
 const colors = require('colors');
-const { validateJson } = require('../lib/schema');
 
 const orderCtrl = {
    create: async (req, res) => {
@@ -159,14 +158,7 @@ const orderCtrl = {
    },
    setTrackingNumber: async (req, res) => {
       try {
-         const schemaValidate = validateJson('newTrackingNumber', req.body);
-         if (!schemaValidate.result) {
-            if (process.env.NODE_ENV !== 'test') {
-               console.log('schemaValidate errors', schemaValidate.errors);
-            }
-            res.status(400).json(schemaValidate.errors);
-            return;
-         }
+         OrdersRepo.validateSchema('newTrackingNumber', req.body);
 
          await OrdersRepo.updateOne({
             query: { _id: getId(req.body.order_id) },

@@ -2,7 +2,6 @@ const baseRepository = require('./baseRepository');
 const { getDb } = require('../lib/db');
 const filters = require('../config/filter.json');
 const { getConfig } = require('../lib/config');
-const Decimal128 = require('mongodb').Decimal128;
 const colors = require('colors');
 const { glob } = require('glob');
 const {
@@ -20,30 +19,14 @@ const mime = require('mime-type/with-db');
 const db = getDb();
 const collection = db.products;
 
-const objIncludesField = (obj = {}, field) => {
-   if (Object.keys(obj).includes(field)) return true;
-   return false;
-};
-
 const productRepo = {
    ...baseRepository(collection),
-   insertOne: async (doc) =>
-      await collection.insertOne({
-         ...doc,
-         productPrice: Decimal128.fromString(doc.productPrice),
-      }),
+   insertOne: async (doc) => await collection.insertOne({ ...doc }),
    updateOne: async ({ query = {}, set = {}, options = {} }) => {
       try {
          return await collection.findOneAndUpdate(
             query,
-            {
-               $set: objIncludesField(set, 'productPrice')
-                  ? {
-                       ...set,
-                       productPrice: Decimal128.fromString(set.productPrice),
-                    }
-                  : set,
-            },
+            { $set: set },
             { multi: false, returnOriginal: false, ...options }
          );
       } catch (error) {

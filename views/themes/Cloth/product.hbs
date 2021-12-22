@@ -26,11 +26,16 @@
         <div class="col-sm-12 col-md-6 ml-auto">
             <div class="row">
                 <h1 class="col-md-10 product-title text-truncate">{{result.productTitle}}</h1>
-                {{#if variants}}
-                    <h4 class="col-md-10 product-price mp-0">{{currencySymbol config.currencySymbol}}{{variants.0.price}}</h4>
-                {{else}}
-                    <h4 class="col-md-10 product-price mp-0">{{currencySymbol config.currencySymbol}}{{result.productPrice}}</h4>
-                {{/if}}
+                <div class="d-flex">
+                    {{#if variants}}
+                        <h4 class="col-md-10 product-price mp-0">{{currencySymbol config.currencySymbol}}{{variants.0.price}}</h4>
+                    {{else}}
+                        <h4 class="col-md-10 product-price mp-0">{{currencySymbol config.currencySymbol}}{{result.productPrice}}</h4>
+                    {{/if}}
+                    {{#if result.productPriceEuro}}
+                        <h4 class="col-md-10 product-price mp-0">{{currencySymbol config.currencySymbols.euro}}{{result.productPriceEuro}}</h4>
+                    {{/if}}
+                </div>
                 {{#if variants}}
                     <h4 class="col-md-10 product-option">{{ @root.__ "Options" }}</h4>
                     <div class="col-md-10">
@@ -79,6 +84,12 @@
                 </div>
                 <div class="col-md-10 body_text">
                     {{{fixTags result.productDescription}}}
+                    <h4><b>Technical specifications</b></h4>
+                    <p class="text-capitalize"><b>Condition: </b>{{result.productCondition}}</p>
+                    <p><b>Hashrate: </b>{{result.productHashrate}}</p>
+                    <p><b>Algorithm: </b>{{result.productAlgorithm}}</p>
+                    <p><b>Weight: </b>{{result.productWeight}}</p>
+                    <p><b>Electricity Usage: </b>{{result.productElectricityUsage}}</p>
                 </div>
                 {{#if @root.config.modules.enabled.reviews}}
                 <div class="col-md-10 mb-3">

@@ -301,6 +301,7 @@ $(document).ready(function () {
                data: {
                   productTitle: $('#productTitle').val(),
                   productPrice: $('#productPrice').val(),
+                  productPriceEuro: $('#productPriceEuro').val(),
                   productPublished: $('#productPublished').val(),
                   productStock: $('#productStock').val(),
                   productDescription: $('#productDescription').val(),

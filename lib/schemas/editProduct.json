@@ -18,6 +18,9 @@
       "productPrice": {
          "type": "string"
       },
+      "productPriceEuro": {
+         "type": "string"
+      },
       "productDescription": {
          "type": "string",
          "isNotEmpty": true
