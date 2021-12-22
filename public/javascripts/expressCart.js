@@ -100,7 +100,7 @@ $(document).ready(function () {
       var pageNum = $('#pageNum').val();
       var pageLen = $('#itemsPerPage').val();
       var itemCount = $('#totalItemCount').val();
-      var paginateUrl = $('#paginateUrl').val();
+      var paginateUrl = $('#paginateUrl').val() + '/';
       var searchTerm = $('#searchTerm').val();
       let filterTerms = localStorage.getItem('filterTerms');
       let sortOrder = localStorage.getItem('sortOrder');
@@ -122,15 +122,14 @@ $(document).ready(function () {
       }
 
       var pagerHref =
+         '/' +
          paginateUrl +
-         '/product/' +
          'page/' +
          '{{number}}' +
          '/' +
          searchTerm +
          sortOrder +
          encodeURI(filterTerms);
-      debugger;
 
       var totalItems = Math.ceil(itemCount / pageLen);
 
@@ -706,6 +705,7 @@ $(document).ready(function () {
       if ($('#frm_search').val().trim() === '') {
          showNotification('Please enter a search value', 'danger');
       } else {
+         localStorage.setItem('searchTerms', $('#frm_search').val());
          window.location.pathname =
             '/product/searchTerm/' + $('#frm_search').val();
       }
@@ -1030,9 +1030,14 @@ function buyAction() {
 
 const onFilterChange = (target) => {
    const parent = $(`#${target.id}`).parent('ul').attr('id');
+   let searchTerms = localStorage.getItem('searchTerms');
 
-   // not sure if you wanted this, but I thought I'd add it.
-   // get an associative array of just the values.
+   if (searchTerms && searchTerms !== '') {
+      searchTerms = `searchTerm/${searchTerms}/`;
+   } else {
+      searchTerms = '';
+   }
+
    let values = localStorage.getItem('filterTerms')
       ? JSON.parse(localStorage.getItem('filterTerms'))
       : {};
@@ -1043,7 +1048,9 @@ const onFilterChange = (target) => {
    if (JSON.stringify(values) === '') {
       window.location.pathname = '/';
    }
-   window.location.pathname = `product/filterTerms/${JSON.stringify(values)}`;
+   window.location.pathname = `product/${searchTerms}filterTerms/${JSON.stringify(
+      values
+   )}`;
 };
 
 const onSortOrderChange = () => {

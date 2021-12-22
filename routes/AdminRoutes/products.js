@@ -46,6 +46,7 @@ router.post(
    adminCtrl.deleteTechFeatures
 );
 
-router.get('/:page?', restrict, adminViews.page);
+router.get('/', restrict, adminViews.page);
+router.get('/page/:page?', restrict, adminViews.page);
 
 module.exports = router;

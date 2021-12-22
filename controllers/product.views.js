@@ -178,6 +178,12 @@ const productViews = {
          });
       }
 
+      //I should find a more general solution to number fields
+      if (filterTerms.productElectricityUsage) {
+         filterTerms.productElectricityUsage =
+            +filterTerms.productElectricityUsage;
+      }
+
       let pageNum = 1;
       if (req.params.pageNum) {
          pageNum = req.params.pageNum;
@@ -207,7 +213,7 @@ const productViews = {
             res.render(`${config.themeViews}index`, {
                title: 'Results',
                results: results.data,
-               filters: filters,
+               filters,
                filtered: true,
                sortOrder,
                session: req.session,
@@ -218,7 +224,7 @@ const productViews = {
                productsPerPage: numberProducts,
                totalProductCount: results.totalItems,
                pageNum: pageNum,
-               paginateUrl: '',
+               paginateUrl: 'product',
                config: config,
                menu: sortMenu(menu),
                helpers: req.handlebars.helpers,

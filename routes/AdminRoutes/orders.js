@@ -32,6 +32,7 @@ router.post(
 );
 
 // Show orders
-router.get('/:page?', restrict, orderViews.show);
+router.get('/', restrict, orderViews.show);
+router.get('/page/:page?', restrict, orderViews.show);
 
 module.exports = router;

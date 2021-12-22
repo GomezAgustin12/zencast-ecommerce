@@ -4,7 +4,8 @@ const { restrict, checkAccess } = require('../../lib/auth');
 const reviewsCtrl = require('../../controllers/reviews.controller');
 const reviewsViews = require('../../controllers/reviews.views');
 
-router.get('/:page?', restrict, reviewsViews.page);
+router.get('/', restrict, reviewsViews.page);
+router.get('/page/:page?', restrict, reviewsViews.page);
 
 router.get('/filter/:search', restrict, reviewsViews.filter);
 
